@@ -1,6 +1,6 @@
 <?php
 
-	namespace Stoic\Input;
+	namespace Stoic\Input\Sanitizers;
 
 	/**
 	 * Interface SanitizerInterface

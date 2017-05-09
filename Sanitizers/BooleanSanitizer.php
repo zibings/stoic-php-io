@@ -2,8 +2,6 @@
 
 	namespace Stoic\Input\Sanitizers;
 
-	use Stoic\Input\SanitizerInterface;
-
 	/**
 	 * Class BooleanSanitizer
 	 *
