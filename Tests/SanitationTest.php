@@ -7,6 +7,8 @@
 	use Stoic\Input\Sanitizers\SanitizerInterface;
 
 	class StripArrayProperties implements SanitizerInterface {
+		const name = 'strip_array_properties';
+
 		protected $_safe = array(
 			'class',
 			'style',
@@ -38,8 +40,8 @@
 	}
 
 	class SanitationTest extends TestCase {
-		public function test_registerSanitizer() {
-			SanitationHelper::registerSanitizer('strip_array', StripArrayProperties::class);
+		public function test_registerNewSanitizer() {
+			SanitationHelper::registerSanitizer(StripArrayProperties::name, StripArrayProperties::class);
 
 			$input = array(
 				'class' => 'awesome',
@@ -48,7 +50,7 @@
 			);
 
 			$sanitation = SanitationHelper::getInstance();
-			$output = $sanitation->sanitize($input, 'strip_array');
+			$output = $sanitation->sanitize($input, StripArrayProperties::name);
 
 			$this->assertCount(2, $output);
 			$this->assertArrayHasKey('class', $output);
@@ -67,13 +69,22 @@
 			$full  = $sanitation->boolean(array('one', 'two'));
 
 			$this->assertFalse($false);
+			$this->assertTrue(is_bool($false));
+
 			$this->assertTrue($true);
+			$this->assertTrue(is_bool($true));
 
 			$this->assertFalse($zero);
+			$this->assertTrue(is_bool($zero));
+
 			$this->assertTrue($one);
+			$this->assertTrue(is_bool($one));
 
 			$this->assertFalse($empty);
+			$this->assertTrue(is_bool($empty));
+
 			$this->assertTrue($full);
+			$this->assertTrue(is_bool($full));
 		}
 
 		public function test_stringSanitizer() {
@@ -87,13 +98,26 @@
 			$float   = $sanitation->string(3.14);
 			$string  = $sanitation->string('actual_string');
 
-			$this->assertEquals($object, 'test_string');
-			$this->assertEquals($array, serialize(array()));
-			$this->assertEquals($true, 'true');
-			$this->assertEquals($false, 'false');
-			$this->assertEquals($integer, '42');
-			$this->assertEquals($float, '3.14');
-			$this->assertEquals($string, 'actual_string');
+			$this->assertEquals('test_string', $object);
+			$this->assertTrue(is_string($object));
+
+			$this->assertEquals(serialize(array()), $array);
+			$this->assertTrue(is_string($array));
+
+			$this->assertEquals('true', $true);
+			$this->assertTrue(is_string($true));
+
+			$this->assertEquals('false', $false);
+			$this->assertTrue(is_string($false));
+
+			$this->assertEquals('42', $integer);
+			$this->assertTrue(is_string($integer));
+
+			$this->assertEquals('3.14', $float);
+			$this->assertTrue(is_string($float));
+
+			$this->assertEquals('actual_string', $string);
+			$this->assertTrue(is_string($string));
 		}
 
 		public function test_integerSanitizer() {
@@ -110,14 +134,31 @@
 			$actualInt = $sanitation->integer(42);
 
 			$this->assertEquals(2, $object);
+			$this->assertTrue(is_int($object));
+
 			$this->assertEquals(0, $empty);
+			$this->assertTrue(is_int($empty));
+
 			$this->assertEquals(3, $full);
+			$this->assertTrue(is_int($full));
+
 			$this->assertEquals(1, $true);
+			$this->assertTrue(is_int($true));
+
 			$this->assertEquals(0, $false);
+			$this->assertTrue(is_int($false));
+
 			$this->assertEquals(6, $string);
+			$this->assertTrue(is_int($string));
+
 			$this->assertEquals(42, $integer);
+			$this->assertTrue(is_int($integer));
+
 			$this->assertEquals(3, $float);
+			$this->assertTrue(is_int($float));
+
 			$this->assertEquals(42, $actualInt);
+			$this->assertTrue(is_int($actualInt));
 		}
 
 		public function test_floatSanitizer() {
@@ -134,13 +175,30 @@
 			$actualFloat = $sanitation->float(6.66);
 
 			$this->assertEquals(2, $object);
+			$this->assertTrue(is_float($object));
+
 			$this->assertEquals(0, $empty);
+			$this->assertTrue(is_float($empty));
+
 			$this->assertEquals(3, $full);
+			$this->assertTrue(is_float($full));
+
 			$this->assertEquals(1, $true);
+			$this->assertTrue(is_float($true));
+
 			$this->assertEquals(0, $false);
+			$this->assertTrue(is_float($false));
+
 			$this->assertEquals(6, $string);
+			$this->assertTrue(is_float($string));
+
 			$this->assertEquals(42, $integer);
+			$this->assertTrue(is_float($integer));
+
 			$this->assertEquals(3.14, $float);
+			$this->assertTrue(is_float($float));
+
 			$this->assertEquals(6.66, $actualFloat);
+			$this->assertTrue(is_float($actualFloat));
 		}
 	}
