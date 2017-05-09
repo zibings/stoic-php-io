@@ -1,10 +1,10 @@
 <?php
 
-	namespace Stoic\Sanitation\Tests;
+	namespace Stoic\Input\Tests;
 
 	use PHPUnit\Framework\TestCase;
-	use Stoic\Sanitation\SanitationHelper;
-	use Stoic\Sanitation\SanitizerInterface;
+	use Stoic\Input\SanitationHelper;
+	use Stoic\Input\SanitizerInterface;
 
 	class StripArrayProperties implements SanitizerInterface {
 		protected $_safe = array(

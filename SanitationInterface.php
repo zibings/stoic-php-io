@@ -1,11 +1,11 @@
 <?php
 
-	namespace Stoic\Sanitation;
+	namespace Stoic\Input;
 
 	/**
 	 * Interface SanitationInterface
 	 *
-	 * @package Stoic\Sanitation
+	 * @package Stoic\Input
 	 * @version 1.0.0
 	 */
 	interface SanitationInterface {

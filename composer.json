@@ -1,14 +1,14 @@
 {
-  "name": "stoic/sanitation",
-  "description": "Sanitation component for the Stoic framework",
+  "name": "stoic/input",
+  "description": "Input components for the Stoic framework",
   "version": "1.0.0",
   "homepage": "http://www.stoic-framework.com",
   "autoload": {
     "psr-0": {
-      "Stoic\\Sanitation\\": ""
+      "Stoic\\Input\\": ""
     },
     "psr-4": {
-      "Stoic\\Sanitation\\": ""
+      "Stoic\\Input\\": ""
     },
     "exclude-from-classmap": [
       "/Tests/"

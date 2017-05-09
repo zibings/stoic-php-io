@@ -1,11 +1,13 @@
 <?php
 
-	namespace Stoic\Sanitation;
+	namespace Stoic\Input\Sanitizers;
+
+	use Stoic\Input\SanitizerInterface;
 
 	/**
 	 * Class StringSanitizer
 	 *
-	 * @package Stoic\Sanitation
+	 * @package Stoic\Input
 	 * @version 1.0.0
 	 */
 	class StringSanitizer implements SanitizerInterface {

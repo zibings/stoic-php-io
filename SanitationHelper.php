@@ -1,11 +1,16 @@
 <?php
 
-	namespace Stoic\Sanitation;
+	namespace Stoic\Input;
+
+	use Stoic\Input\Sanitizers\BooleanSanitizer;
+	use Stoic\Input\Sanitizers\FloatSanitizer;
+	use Stoic\Input\Sanitizers\IntegerSanitizer;
+	use Stoic\Input\Sanitizers\StringSanitizer;
 
 	/**
 	 * Class SanitationHelper
 	 *
-	 * @package Stoic\Sanitation
+	 * @package Stoic\Input
 	 * @version 1.0.0
 	 */
 	class SanitationHelper implements SanitationInterface {
