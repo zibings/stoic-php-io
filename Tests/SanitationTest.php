@@ -4,7 +4,7 @@
 
 	use PHPUnit\Framework\TestCase;
 	use Stoic\Input\SanitationHelper;
-	use Stoic\Input\SanitizerInterface;
+	use Stoic\Input\Sanitizers\SanitizerInterface;
 
 	class StripArrayProperties implements SanitizerInterface {
 		protected $_safe = array(
