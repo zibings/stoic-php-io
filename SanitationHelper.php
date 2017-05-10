@@ -2,11 +2,7 @@
 
 	namespace Stoic\Input;
 
-	use Stoic\Input\Sanitizers\BooleanSanitizer;
-	use Stoic\Input\Sanitizers\FloatSanitizer;
-	use Stoic\Input\Sanitizers\IntegerSanitizer;
 	use Stoic\Input\Sanitizers\SanitizerInterface;
-	use Stoic\Input\Sanitizers\StringSanitizer;
 
 	/**
 	 * Class SanitationHelper
@@ -21,77 +17,52 @@
 		 *
 		 * @var SanitizerInterface[]
 		 */
-		protected static $_sanitizers = array();
+		protected $_sanitizers = array();
 
 		/**
-		 * Converts the supplied input into a boolean value.
+		 * Add a new sanitation type.
 		 *
-		 * @param mixed $input The variable that will be converted to a boolean value.
+		 * @param string $key       The key, which is a string value, that described the sanitizer being added.
+		 * @param string $sanitizer The instance of the sanitizer class, or a fully qualified domain name of the class.
 		 *
-		 * @return boolean
+		 * @return $this
 		 */
-		public function boolean($input) {
-			// @Todo: The default boolean sanitizer will need to be able to be overridden.
-			return $this->sanitize($input, BooleanSanitizer::class);
+		public function addSanitizer($key, $sanitizer) {
+			if (is_object($sanitizer) && ($sanitizer instanceof SanitizerInterface::class)) {
+				$this->_sanitizers[$key] = $sanitizer;
+
+			} else if (is_string($sanitizer) && class_exists($sanitizer) && class_implements($sanitizer, SanitizerInterface::class)) {
+				$this->_sanitizers[$key] = new $sanitizer();
+
+			}
+
+			return $this;
 		}
 
 		/**
-		 * Converts the supplied input into a string value.
+		 * Check whether a sanitation type exists.
 		 *
-		 * @param mixed $input The variable that will be converted to a string value.
+		 * @param string $key The key, which is a string value, of the sanitizer that is being searched for.
 		 *
-		 * @return string
+		 * @return bool
 		 */
-		public function string($input) {
-			// @Todo: The default string sanitizer will need to be able to be overridden.
-			return $this->sanitize($input, StringSanitizer::class);
-		}
-
-		/**
-		 * Converts the supplied input into an integer value.
-		 *
-		 * @param mixed $input The variable that will be converted to an integer value.
-		 *
-		 * @return integer
-		 */
-		public function integer($input) {
-			// @Todo: The default integer sanitizer will need to be able to be overridden.
-			return $this->sanitize($input, IntegerSanitizer::class);
-		}
-
-		/**
-		 * Converts the supplied input into a float value.
-		 *
-		 * @param mixed $input The variable that will be converted to a float value.
-		 *
-		 * @return float
-		 */
-		public function float($input) {
-			// @Todo: The default float sanitizer will need to be able to be overridden.
-			return $this->sanitize($input, FloatSanitizer::class);
+		public function hasSanitizer($key) {
+			return isset($this->_sanitizers[$key]);
 		}
 
 		/**
 		 * Converts the supplied input to a specific value.
 		 *
 		 * @param mixed  $input The value that is going to be sanitized.
-		 * @param string $class The name of the sanitizer type.
+		 * @param string $key   The key, which is a string value, for the sanitizer that will be used.
 		 *
 		 * @return mixed
 		 */
-		public function sanitize($input, $class) {
-			if (!isset(self::$_sanitizers[$class])) {
-				if (!class_exists($class)) {
-					return $input;
-				}
-
-				if (!class_implements($class, SanitizerInterface::class)) {
-					return $input;
-				}
-
-				self::$_sanitizers[$class] = new $class();
+		public function sanitize($input, $key) {
+			if (!$this->hasSanitizer($key)) {
+				return $input;
 			}
 
-			return self::$_sanitizers[$class]->sanitize($input);
+			return $this->_sanitizers[$key]->sanitize($input);
 		}
 	}
