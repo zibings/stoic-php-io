@@ -28,12 +28,11 @@
 		 * @return $this
 		 */
 		public function addSanitizer($key, $sanitizer) {
-			if (is_object($sanitizer) && ($sanitizer instanceof SanitizerInterface::class)) {
-				$this->_sanitizers[$key] = $sanitizer;
+			if (is_object($sanitizer) && ($sanitizer instanceof SanitizerInterface)) {
+				$this->_sanitizers[$key]= $sanitizer;
 
 			} else if (is_string($sanitizer) && class_exists($sanitizer) && class_implements($sanitizer, SanitizerInterface::class)) {
 				$this->_sanitizers[$key] = new $sanitizer();
-
 			}
 
 			return $this;
