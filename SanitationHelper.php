@@ -24,26 +24,6 @@
 		protected static $_sanitizers = array();
 
 		/**
-		 * Singleton instance of the sanitation helper.
-		 *
-		 * @var SanitationHelper
-		 */
-		protected static $_instance = null;
-
-		/**
-		 * Returns the singleton instance of the sanitation helper.
-		 *
-		 * @return SanitationHelper
-		 */
-		public static function &getInstance() {
-			if (is_null(self::$_instance) || !is_object(self::$_instance)) {
-				self::$_instance = new self();
-			}
-
-			return self::$_instance;
-		}
-
-		/**
 		 * Converts the supplied input into a boolean value.
 		 *
 		 * @param mixed $input The variable that will be converted to a boolean value.
