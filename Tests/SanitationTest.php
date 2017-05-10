@@ -4,30 +4,10 @@
 
 	use PHPUnit\Framework\TestCase;
 	use Stoic\Input\SanitationHelper;
-	use Stoic\Input\Sanitizers\SanitizerInterface;
-
-	class StripArrayProperties implements SanitizerInterface {
-		const name = 'strip_array_properties';
-
-		protected $_safe = array(
-			'class',
-			'style',
-		);
-
-		public function sanitize($input) {
-			$array = array();
-
-			if (is_array($input)) {
-				foreach ($input as $name => $value) {
-					if (in_array($name, $this->_safe)) {
-						$array[$name] = $value;
-					}
-				}
-			}
-
-			return $array;
-		}
-	}
+	use Stoic\Input\Sanitizers\BooleanSanitizer;
+	use Stoic\Input\Sanitizers\FloatSanitizer;
+	use Stoic\Input\Sanitizers\IntegerSanitizer;
+	use Stoic\Input\Sanitizers\StringSanitizer;
 
 	class testObject {
 		public $one;
@@ -40,33 +20,28 @@
 	}
 
 	class SanitationTest extends TestCase {
-		public function test_registerNewSanitizer() {
-			SanitationHelper::registerSanitizer(StripArrayProperties::name, StripArrayProperties::class);
+		public function test_addSanitizer() {
+			$sanitation = new SanitationHelper();
+			$sanitation->addSanitizer('string', StringSanitizer::class);
+			$sanitation->addSanitizer('integer', new IntegerSanitizer());
 
-			$input = array(
-				'class' => 'awesome',
-				'style' => 'great',
-				'attr'  => 'none'
-			);
+			$this->assertTrue($sanitation->hasSanitizer('string'));
+			$this->assertTrue($sanitation->hasSanitizer('integer'));
 
-			$sanitation = SanitationHelper::getInstance();
-			$output = $sanitation->sanitize($input, StripArrayProperties::name);
-
-			$this->assertCount(2, $output);
-			$this->assertArrayHasKey('class', $output);
-			$this->assertArrayHasKey('style', $output);
-			$this->assertArrayNotHasKey('attr', $output);
+			$this->assertEquals('123', $sanitation->sanitize(123, 'string'));
+			$this->assertEquals(123, $sanitation->sanitize('123', 'integer'));
 		}
 
 		public function test_booleanSanitizer() {
-			$sanitation = SanitationHelper::getInstance();
+			$sanitation = new SanitationHelper();
+			$sanitation->addSanitizer('bool', BooleanSanitizer::class);
 
-			$false = $sanitation->boolean(false);
-			$true  = $sanitation->boolean(true);
-			$zero  = $sanitation->boolean(0);
-			$one   = $sanitation->boolean(1);
-			$empty = $sanitation->boolean(array());
-			$full  = $sanitation->boolean(array('one', 'two'));
+			$false = $sanitation->sanitize(false, 'bool');
+			$true  = $sanitation->sanitize(true, 'bool');
+			$zero  = $sanitation->sanitize(0, 'bool');
+			$one   = $sanitation->sanitize(1, 'bool');
+			$empty = $sanitation->sanitize(array(), 'bool');
+			$full  = $sanitation->sanitize(array('one', 'two'), 'bool');
 
 			$this->assertFalse($false);
 			$this->assertTrue(is_bool($false));
@@ -88,15 +63,16 @@
 		}
 
 		public function test_stringSanitizer() {
-			$sanitation = SanitationHelper::getInstance();
+			$sanitation = new SanitationHelper();
+			$sanitation->addSanitizer('string', StringSanitizer::class);
 
-			$object  = $sanitation->string(new testObject());
-			$array   = $sanitation->string(array());
-			$true    = $sanitation->string(true);
-			$false   = $sanitation->string(false);
-			$integer = $sanitation->string(42);
-			$float   = $sanitation->string(3.14);
-			$string  = $sanitation->string('actual_string');
+			$object  = $sanitation->sanitize(new testObject(), 'string');
+			$array   = $sanitation->sanitize(array(), 'string');
+			$true    = $sanitation->sanitize(true, 'string');
+			$false   = $sanitation->sanitize(false, 'string');
+			$integer = $sanitation->sanitize(42, 'string');
+			$float   = $sanitation->sanitize(3.14, 'string');
+			$string  = $sanitation->sanitize('actual_string', 'string');
 
 			$this->assertEquals('test_string', $object);
 			$this->assertTrue(is_string($object));
@@ -121,17 +97,18 @@
 		}
 
 		public function test_integerSanitizer() {
-			$sanitation = SanitationHelper::getInstance();
+			$sanitation = new SanitationHelper();
+			$sanitation->addSanitizer('integer', IntegerSanitizer::class);
 
-			$object    = $sanitation->integer(new testObject());
-			$empty     = $sanitation->integer(array());
-			$full      = $sanitation->integer(array(1,2,3));
-			$true      = $sanitation->integer(true);
-			$false     = $sanitation->integer(false);
-			$string    = $sanitation->integer('string');
-			$integer   = $sanitation->integer('42');
-			$float     = $sanitation->integer('3.14');
-			$actualInt = $sanitation->integer(42);
+			$object    = $sanitation->sanitize(new testObject(), 'integer');
+			$empty     = $sanitation->sanitize(array(), 'integer');
+			$full      = $sanitation->sanitize(array(1,2,3), 'integer');
+			$true      = $sanitation->sanitize(true, 'integer');
+			$false     = $sanitation->sanitize(false, 'integer');
+			$string    = $sanitation->sanitize('string', 'integer');
+			$integer   = $sanitation->sanitize('42', 'integer');
+			$float     = $sanitation->sanitize('3.14', 'integer');
+			$actualInt = $sanitation->sanitize(42, 'integer');
 
 			$this->assertEquals(2, $object);
 			$this->assertTrue(is_int($object));
@@ -162,17 +139,18 @@
 		}
 
 		public function test_floatSanitizer() {
-			$sanitation = SanitationHelper::getInstance();
+			$sanitation = new SanitationHelper();
+			$sanitation->addSanitizer('float', FloatSanitizer::class);
 
-			$object      = $sanitation->float(new testObject());
-			$empty       = $sanitation->float(array());
-			$full        = $sanitation->float(array(1,2,3));
-			$true        = $sanitation->float(true);
-			$false       = $sanitation->float(false);
-			$string      = $sanitation->float('string');
-			$integer     = $sanitation->float('42');
-			$float       = $sanitation->float('3.14');
-			$actualFloat = $sanitation->float(6.66);
+			$object      = $sanitation->sanitize(new testObject(), 'float');
+			$empty       = $sanitation->sanitize(array(), 'float');
+			$full        = $sanitation->sanitize(array(1,2,3), 'float');
+			$true        = $sanitation->sanitize(true, 'float');
+			$false       = $sanitation->sanitize(false, 'float');
+			$string      = $sanitation->sanitize('string', 'float');
+			$integer     = $sanitation->sanitize('42', 'float');
+			$float       = $sanitation->sanitize('3.14', 'float');
+			$actualFloat = $sanitation->sanitize(6.66, 'float');
 
 			$this->assertEquals(2, $object);
 			$this->assertTrue(is_float($object));
@@ -200,5 +178,13 @@
 
 			$this->assertEquals(6.66, $actualFloat);
 			$this->assertTrue(is_float($actualFloat));
+		}
+
+		public function test_hasSanitizer() {
+			$sanitation = new SanitationHelper();
+			$this->assertFalse($sanitation->hasSanitizer('bool'));
+
+			$sanitation->addSanitizer('bool', BooleanSanitizer::class);
+			$this->assertTrue($sanitation->hasSanitizer('bool'));
 		}
 	}
