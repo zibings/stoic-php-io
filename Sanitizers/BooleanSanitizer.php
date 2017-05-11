@@ -31,7 +31,7 @@
 						$value = true;
 					}
 				} else {
-					$value = (bool) $input;
+					$value = boolval($input);
 				}
 			} catch (\Exception $ex) {
 				$value = false;
