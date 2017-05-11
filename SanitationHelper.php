@@ -10,7 +10,7 @@
 	 * @package Stoic\Input
 	 * @version 1.0.0
 	 */
-	class SanitationHelper implements SanitationInterface {
+	class SanitationHelper {
 
 		/**
 		 * List of all the instantiated sanitizers.
