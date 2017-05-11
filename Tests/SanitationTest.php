@@ -32,6 +32,11 @@
 			$this->assertEquals(123, $sanitation->sanitize('123', 'integer'));
 		}
 
+		public function test_nonExistentSanitizerReturnsOriginalValue() {
+			$sanitation = new SanitationHelper();
+			$this->assertEquals('1984-06-15', $sanitation->sanitize('1984-06-15', 'datetime'));
+		}
+
 		public function test_booleanSanitizer() {
 			$sanitation = new SanitationHelper();
 			$sanitation->addSanitizer('bool', BooleanSanitizer::class);
