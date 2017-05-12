@@ -3,6 +3,10 @@
 	namespace Stoic\Input;
 
 	use Stoic\Input\Sanitizers\SanitizerInterface;
+	use Stoic\Input\Sanitizers\BooleanSanitizer;
+	use Stoic\Input\Sanitizers\IntegerSanitizer;
+	use Stoic\Input\Sanitizers\FloatSanitizer;
+	use Stoic\Input\Sanitizers\StringSanitizer;
 
 	/**
 	 * Class SanitationHelper
@@ -12,12 +16,30 @@
 	 */
 	class SanitationHelper {
 
+		const BOOLEAN = 'bool';
+		const INTEGER = 'int';
+		const FLOAT   = 'float';
+		const STRING  = 'string';
+
+		protected $_defaults = array(
+			self::BOOLEAN => BooleanSanitizer::class,
+			self::INTEGER => IntegerSanitizer::class,
+			self::FLOAT   => FloatSanitizer::class,
+			self::STRING  => StringSanitizer::class,
+		);
+
 		/**
 		 * List of all the instantiated sanitizers.
 		 *
 		 * @var SanitizerInterface[]
 		 */
 		protected $_sanitizers = array();
+
+		public function __construct() {
+			foreach ($this->_defaults as $name => $class) {
+				$this->addSanitizer($name, $class);
+			}
+		}
 
 		/**
 		 * Add a new sanitation type.
