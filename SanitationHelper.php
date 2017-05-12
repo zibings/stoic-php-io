@@ -21,6 +21,11 @@
 		const FLOAT   = 'float';
 		const STRING  = 'string';
 
+		/**
+		 * List of all the default sanitizer classes.
+		 *
+		 * @var string[]
+		 */
 		protected $_defaults = array(
 			self::BOOLEAN => BooleanSanitizer::class,
 			self::INTEGER => IntegerSanitizer::class,
@@ -35,6 +40,11 @@
 		 */
 		protected $_sanitizers = array();
 
+		/**
+		 * SanitationHelper constructor.
+		 *
+		 * Adds all the default sanitizers.
+		 */
 		public function __construct() {
 			foreach ($this->_defaults as $name => $class) {
 				$this->addSanitizer($name, $class);
