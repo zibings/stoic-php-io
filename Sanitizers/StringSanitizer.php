@@ -15,6 +15,8 @@
 		 *
 		 * @param mixed $input The input that will be sanitized to a string value.
 		 *
+		 * @throws \Exception
+		 *
 		 * @return string
 		 */
 		public function sanitize($input) {
@@ -39,7 +41,7 @@
 					$value = (string) $input;
 				}
 			} catch (\Exception $ex) {
-				$value = '';
+				throw $ex;
 			}
 
 			return $value;

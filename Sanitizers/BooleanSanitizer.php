@@ -15,6 +15,8 @@
 		 *
 		 * @param mixed $input The input that will be sanitized to a boolean value.
 		 *
+		 * @throws \Exception
+		 *
 		 * @return boolean
 		 */
 		public function sanitize($input) {
@@ -34,7 +36,7 @@
 					$value = boolval($input);
 				}
 			} catch (\Exception $ex) {
-				$value = false;
+				throw $ex;
 			}
 
 			return $value;

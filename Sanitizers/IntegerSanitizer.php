@@ -15,6 +15,8 @@
 		 *
 		 * @param mixed $input The input that will be sanitized to an integer value.
 		 *
+		 * @throws \Exception
+		 *
 		 * @return integer
 		 */
 		public function sanitize($input) {
@@ -38,7 +40,7 @@
 					$value = intval($input);
 				}
 			} catch (\Exception $ex) {
-				$value = 0;
+				throw $ex;
 			}
 
 			return $value;

@@ -15,6 +15,8 @@
 		 *
 		 * @param mixed $input The input that will be sanitized to a float value.
 		 *
+		 * @throws \Exception
+		 *
 		 * @return float
 		 */
 		public function sanitize($input) {
@@ -38,7 +40,7 @@
 					$value = floatval($input);
 				}
 			} catch (\Exception $ex) {
-				$value = 0;
+				throw $ex;
 			}
 
 			return $value;
