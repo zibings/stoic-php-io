@@ -187,9 +187,9 @@
 
 		public function test_hasSanitizer() {
 			$sanitation = new SanitationHelper();
-			$this->assertFalse($sanitation->hasSanitizer('bool'));
+			$this->assertFalse($sanitation->hasSanitizer('datetime'));
 
-			$sanitation->addSanitizer('bool', BooleanSanitizer::class);
-			$this->assertTrue($sanitation->hasSanitizer('bool'));
+			$sanitation->addSanitizer('datetime', BooleanSanitizer::class);
+			$this->assertTrue($sanitation->hasSanitizer('datetime'));
 		}
 	}
