@@ -2,7 +2,7 @@
 
 	namespace Stoic\IO;
 
-	use Stoic\Input\SanitationHelper;
+	use Stoic\IO\SanitationHelper;
 
 	/**
 	 * Class ParameterHelper
