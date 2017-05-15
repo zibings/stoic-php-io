@@ -33,8 +33,8 @@
 		 * @param SanitationHelper $sanitizer Helper class that sanitizes values to a specific type.
 		 */
 		public function __construct(array $params = null, SanitationHelper $sanitizer = null) {
-			if (!is_array($params)) {
-				return;
+			if (is_null($params)) {
+				$params = array();
 			}
 
 			if (is_null($sanitizer)) {
@@ -168,5 +168,47 @@
 			}
 
 			return $this->_parameters[$key];
+		}
+
+		/**
+		 * Sets a new key/pair value.
+		 *
+		 * @param string $key   The name of the value we are setting.
+		 * @param mixed  $value The value that we are setting.
+		 *
+		 * @return $this
+		 */
+		public function add($key, $value) {
+			if (!is_string($key) && !is_int($key)) {
+				return $this;
+			}
+
+			$this->_parameters[$key] = $value;
+
+			return $this;
+		}
+
+		/**
+		 * Adds multiple key/value pairs to the parameters array.
+		 *
+		 * @param array $params
+		 *
+		 * @return $this
+		 */
+		public function set(array $params) {
+			foreach ($params as $key => $value) {
+				$this->add($key, $value);
+			}
+
+			return $this;
+		}
+
+		/**
+		 * Clears all the values from the parameter array.
+		 *
+		 * @return void
+		 */
+		public function clear() {
+			$this->_parameters = array();
 		}
 	}
