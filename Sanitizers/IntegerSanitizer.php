@@ -1,11 +1,11 @@
 <?php
 
-	namespace Stoic\Input\Sanitizers;
+	namespace Stoic\IO\Sanitizers;
 
 	/**
 	 * Class IntegerSanitizer
 	 *
-	 * @package Stoic\Input
+	 * @package Stoic\IO
 	 * @version 1.0.0
 	 */
 	class IntegerSanitizer implements SanitizerInterface {
