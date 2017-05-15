@@ -195,7 +195,7 @@
 		 *
 		 * @return $this
 		 */
-		public function set(array $params) {
+		public function addValues(array $params) {
 			foreach ($params as $key => $value) {
 				$this->add($key, $value);
 			}
