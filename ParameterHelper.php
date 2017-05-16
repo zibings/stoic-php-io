@@ -32,11 +32,7 @@
 		 * @param array            $params    Array of parameters to dispense.
 		 * @param SanitationHelper $sanitizer Helper class that sanitizes values to a specific type.
 		 */
-		public function __construct(array $params = null, SanitationHelper $sanitizer = null) {
-			if (is_null($params)) {
-				$params = array();
-			}
-
+		public function __construct(array $params = array(), SanitationHelper $sanitizer = null) {
 			if (is_null($sanitizer)) {
 				$sanitizer = new SanitationHelper();
 			}
