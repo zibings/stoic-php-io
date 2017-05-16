@@ -153,18 +153,23 @@
 		/**
 		 * Returns a raw parameter value.
 		 *
-		 * @param string $key     The name of the key/value pair we are looking for.
-		 * @param mixed  $default Optional Default value that is returned if key is not found.
+		 * @param string $key       The name of the key/value pair we are looking for.
+		 * @param mixed  $default   Optional Default value that is returned if key is not found.
+		 * @param string $sanitizer The name of the sanitizer that will be used to cleanse the value.
 		 *
 		 * @return mixed Mixed The value of the key if found or default value if not present.
 		 */
-		public function get($key, $default = null) {
+		public function get($key, $default = null, $sanitizer = null) {
 			if ($key === null) {
 				return $this->_parameters;
 			}
 
 			if (!$this->has($key)) {
 				return $default;
+			}
+
+			if ($sanitizer !== null && $this->_sanitizer->hasSanitizer($sanitizer)) {
+				return $this->_sanitizer->sanitize($this->_parameters[$key], $sanitizer);
 			}
 
 			return $this->_parameters[$key];
