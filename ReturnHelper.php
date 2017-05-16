@@ -102,12 +102,12 @@
 		/**
 		 * Adds a message to the instance.
 		 *
-		 * @param string $Message String value of message to add.
+		 * @param string $message String value of message to add.
 		 *
 		 * @return $this The current ReturnHelper instance.
 		 */
-		public function addMessage($Message) {
-			$this->_messages[] = $Message;
+		public function addMessage($message) {
+			$this->_messages[] = $message;
 
 			return $this;
 		}
@@ -115,16 +115,16 @@
 		/**
 		 * Adds multiple messages to the instance.
 		 *
-		 * @param array $Messages Array of string values to add.
+		 * @param array $messages Array of string values to add.
 		 *
 		 * @return $this The current ReturnHelper instance.
 		 */
-		public function addMessages(array $Messages) {
-			if (count($Messages) < 1) {
+		public function addMessages(array $messages) {
+			if (count($messages) < 1) {
 				return $this;
 			}
 
-			foreach (array_values($Messages) as $Msg) {
+			foreach (array_values($messages) as $Msg) {
 				$this->_messages[] = $Msg;
 			}
 
@@ -134,12 +134,12 @@
 		/**
 		 * Adds a result to the instance.
 		 *
-		 * @param mixed $Result Result to add to instance.
+		 * @param mixed $result Result to add to instance.
 		 *
 		 * @return $this The current ReturnHelper instance.
 		 */
-		public function addResult($Result) {
-			$this->_results[] = $Result;
+		public function addResult($result) {
+			$this->_results[] = $result;
 
 			return $this;
 		}
@@ -147,16 +147,16 @@
 		/**
 		 * Adds multiple results to the instance.
 		 *
-		 * @param array $Results Array of results to add.
+		 * @param array $results Array of results to add.
 		 *
 		 * @return $this The current ReturnHelper instance.
 		 */
-		public function addResults(array $Results) {
-			if (count($Results) < 1) {
+		public function addResults(array $results) {
+			if (count($results) < 1) {
 				return $this;
 			}
 
-			foreach (array_values($Results) as $Res) {
+			foreach (array_values($results) as $Res) {
 				$this->_results[] = $Res;
 			}
 
@@ -188,12 +188,12 @@
 		/**
 		 * Sets the instance status.
 		 *
-		 * @param int $Status Integer value of new instance status.
+		 * @param int $status Integer value of new instance status.
 		 *
 		 * @return $this The current ReturnHelper instance.
 		 */
-		public function setStatus($Status) {
-			$this->_status = intval($Status);
+		public function setStatus($status) {
+			$this->_status = intval($status);
 
 			return $this;
 		}
