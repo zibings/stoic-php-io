@@ -1,14 +1,14 @@
 {
-  "name": "stoic/input",
-  "description": "Input components for the Stoic framework",
+  "name": "stoic/io",
+  "description": "Input and Output components for the Stoic framework",
   "version": "1.0.0",
   "homepage": "http://www.stoic-framework.com",
   "autoload": {
     "psr-0": {
-      "Stoic\\Input\\": ""
+      "Stoic\\IO\\": ""
     },
     "psr-4": {
-      "Stoic\\Input\\": ""
+      "Stoic\\IO\\": ""
     },
     "exclude-from-classmap": [
       "/Tests/"

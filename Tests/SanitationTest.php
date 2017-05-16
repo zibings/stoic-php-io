@@ -1,13 +1,13 @@
 <?php
 
-	namespace Stoic\Input\Tests;
+	namespace Stoic\IO\Tests;
 
 	use PHPUnit\Framework\TestCase;
-	use Stoic\Input\SanitationHelper;
-	use Stoic\Input\Sanitizers\BooleanSanitizer;
-	use Stoic\Input\Sanitizers\FloatSanitizer;
-	use Stoic\Input\Sanitizers\IntegerSanitizer;
-	use Stoic\Input\Sanitizers\StringSanitizer;
+	use Stoic\IO\SanitationHelper;
+	use Stoic\IO\Sanitizers\BooleanSanitizer;
+	use Stoic\IO\Sanitizers\FloatSanitizer;
+	use Stoic\IO\Sanitizers\IntegerSanitizer;
+	use Stoic\IO\Sanitizers\StringSanitizer;
 
 	class testObject {
 		public $one;
