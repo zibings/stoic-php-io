@@ -49,7 +49,7 @@
 		 * @return bool True if status is BAD, false otherwise.
 		 */
 		public function isBad() {
-			return !$this->_status;
+			return $this->_status === self::BAD;
 		}
 
 		/**
