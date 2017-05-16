@@ -205,6 +205,21 @@
 		}
 
 		/**
+		 * Remove a key/value pair from the parameters.
+		 *
+		 * @param string $key The name of the value we are removing.
+		 *
+		 * @return $this
+		 */
+		public function remove($key) {
+			if ($this->has($key)) {
+				unset($this->_parameters[$key]);
+			}
+
+			return $this;
+		}
+
+		/**
 		 * Clears all the values from the parameter array.
 		 *
 		 * @return void
