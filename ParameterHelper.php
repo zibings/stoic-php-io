@@ -50,7 +50,7 @@
 		 *
 		 * @return int Number of parameters.
 		 */
-		public function numValues() {
+		public function count() {
 			return count($this->_parameters);
 		}
 
@@ -61,7 +61,7 @@
 		 *
 		 * @return bool True if key exists in parameter list, false otherwise.
 		 */
-		public function hasValue($key) {
+		public function has($key) {
 			return array_key_exists($key, $this->_parameters);
 		}
 
@@ -74,7 +74,7 @@
 		 * @return int Integer value of key or default value if not present.
 		 */
 		public function getInt($key, $default = null) {
-			if (!$this->hasValue($key)) {
+			if (!$this->has($key)) {
 				return $default;
 			}
 
@@ -90,7 +90,7 @@
 		 * @return float Float value of key or default value if not present.
 		 */
 		public function getFloat($key, $default = null) {
-			if (!$this->hasValue($key)) {
+			if (!$this->has($key)) {
 				return $default;
 			}
 
@@ -106,7 +106,7 @@
 		 * @return bool Bool value of key or default value if not present.
 		 */
 		public function getBool($key, $default = null) {
-			if (!$this->hasValue($key)) {
+			if (!$this->has($key)) {
 				return $default;
 			}
 
@@ -123,7 +123,7 @@
 		 * @return mixed Mixed value of key or default value if not present.
 		 */
 		public function getJson($key, $asArray = false, $default = null) {
-			if (!$this->hasValue($key)) {
+			if (!$this->has($key)) {
 				return $default;
 			}
 
@@ -143,7 +143,7 @@
 		 * @return string String value of key or default value if not present.
 		 */
 		public function getString($key, $default = null) {
-			if (!$this->hasValue($key)) {
+			if (!$this->has($key)) {
 				return $default;
 			}
 
@@ -163,7 +163,7 @@
 				return $this->_parameters;
 			}
 
-			if (!$this->hasValue($key)) {
+			if (!$this->has($key)) {
 				return $default;
 			}
 
