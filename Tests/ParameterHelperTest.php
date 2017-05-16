@@ -2,6 +2,7 @@
 
 	namespace Stoic\IO\Tests;
 
+	use phpDocumentor\Reflection\DocBlock\Tags\Param;
 	use PHPUnit\Framework\TestCase;
 	use Stoic\IO\ParameterHelper;
 
@@ -58,5 +59,16 @@
 
 			$this->assertTrue($ph->has('age'));
 			$this->assertEquals(4, $ph->count());
+		}
+
+		public function test_removeValue() {
+			$ph = new ParameterHelper();
+			$ph->add('name', 'Test');
+
+			$this->assertTrue($ph->has('name'));
+
+			$ph->remove('name');
+
+			$this->assertFalse($ph->has('name'));
 		}
 	}
