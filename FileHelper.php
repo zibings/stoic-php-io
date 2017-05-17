@@ -96,12 +96,10 @@
 			$ret = new ReturnHelper();
 
 			if (empty($source) || empty($destination)) {
-				$ret->makeBad()
-					->addMessage("Invalid source or destination path provided.");
+				$ret->addMessage("Invalid source or destination path provided.");
 
 			} else if (!$this->folderExists($source) || $this->folderExists($destination)) {
-				$ret->makeBad()
-					->addMessage("Source directory didn't exist or destination folder already exists.");
+				$ret->addMessage("Source directory didn't exist or destination folder already exists.");
 			} else {
 				$ret = $this->recursiveCopy($source, $destination);
 			}
@@ -151,12 +149,10 @@
 			$ret = new ReturnHelper();
 
 			if (empty($path)) {
-				$ret->makeBad()
-					->addMessage("Invalid path provided.");
+				$ret->addMessage("Invalid path provided.");
 
 			} else if (isset(FileHelper::$_includes[$path]) && !$allowReload) {
-				$ret->makeBad()
-					->addMessage("File has already been included.");
+				$ret->addMessage("File has already been included.");
 
 			} else {
 				FileHelper::$_includes[$path] = true;
@@ -165,11 +161,10 @@
 				if ($this->fileExists($path)) {
 					require($path);
 
-					$ret->addResult($path);
+					$ret->makeGood()->addResult($path);
 
 				} else {
-					$ret->makeBad()
-						->addMessage("File did not exist.");
+					$ret->addMessage("File did not exist.");
 				}
 			}
 
@@ -339,20 +334,17 @@
 			$ret = new ReturnHelper();
 
 			if (empty($path)) {
-				$ret->makeBad()
-					->addMessage("Invalid path provided.");
+				$ret->addMessage("Invalid path provided.");
 
 			} else if ($data === null || empty($data)) {
-				$ret->makeBad()
-					->addMessage("Invalid data provided.");
+				$ret->addMessage("Invalid data provided.");
 
 			} else {
 				if (($bytesWritten = @file_put_contents($this->processRoot($path), $data, $flags, $context)) !== false) {
-					$ret->addResult($bytesWritten);
+					$ret->makeGood()->addResult($bytesWritten);
 
 				} else {
-					$ret->makeBad()
-						->addMessage("Failed to write to file.");
+					$ret->addMessage("Failed to write to file.");
 				}
 			}
 
@@ -369,6 +361,7 @@
 		 */
 		protected function recursiveCopy($source, $destination) {
 			$ret = new ReturnHelper();
+			$ret->makeGood();
 
 			if (substr($source, -1) != '/') {
 				$source .= '/';
@@ -395,15 +388,15 @@
 					$recur = $this->recursiveCopy($source . $file, $destination . $file);
 
 					if ($recur->isBad()) {
-						$ret->makeBad()
-							->addMessages($recur->getMessages());
+						$ret->makeBad();
+						$ret->addMessages($recur->getMessages());
 					} else {
 						$ret->addResults($recur->getResults());
 					}
 				} else {
 					if (!copy($source . $file, $destination . $file)) {
-						$ret->makeBad()
-							->addMessage("Failed to copy '" . $source . $file . "' to '" . $destination . $file . "'");
+						$ret->makeBad();
+						$ret->addMessage("Failed to copy '" . $source . $file . "' to '" . $destination . $file . "'");
 					} else {
 						$ret->addResult($destination . $file);
 					}
