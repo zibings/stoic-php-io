@@ -51,32 +51,32 @@
 		 * Copies a file to $Dest on the filesystem.
 		 *
 		 * @param mixed $source      String value of source file path.
-		 * @param mixed $destinationination String value of desitation file path.
+		 * @param mixed $destination String value of desitation file path.
 		 *
 		 * @return ReturnHelper A ReturnHelper instance with extra state information.
 		 */
-		public function copyFile($source, $destinationination) {
+		public function copyFile($source, $destination) {
 			$ret = new ReturnHelper();
 
-			if (empty($source) || empty($destinationination)) {
+			if (empty($source) || empty($destination)) {
 				$ret->makeBad()
 					->addMessage("Invalid source or destination path provided.");
 
-			} else if (substr($source, -1) == "/" || substr($destinationination, -1) == "/") {
+			} else if (substr($source, -1) == "/" || substr($destination, -1) == "/") {
 				$ret->makeBad()
 					->addMessage("Neither source or destination can be directories.");
 
-			} else if (!$this->fileExists($source) || $this->fileExists($destinationination)) {
+			} else if (!$this->fileExists($source) || $this->fileExists($destination)) {
 				$ret->makeBad()
 					->addMessage("Source file didn't exist or destination file already exists.");
 
 			} else {
-				if (!copy($this->processRoot($source), $this->processRoot($destinationination))) {
+				if (!copy($this->processRoot($source), $this->processRoot($destination))) {
 					$ret->makeBad()
 						->addMessage("Failed to copy file, check PHP logs for error.");
 
 				} else {
-					$ret->addResult($this->processRoot($destinationination));
+					$ret->addResult($this->processRoot($destination));
 				}
 			}
 
@@ -88,22 +88,22 @@
 		 * to $Dest on the filesystem.
 		 *
 		 * @param mixed $source      String value of source directory path.
-		 * @param mixed $destinationination String value of destination directory path.
+		 * @param mixed $destination String value of destination directory path.
 		 *
 		 * @return ReturnHelper A ReturnHelper instance with extra state information.
 		 */
-		public function copyFolder($source, $destinationination) {
+		public function copyFolder($source, $destination) {
 			$ret = new ReturnHelper();
 
-			if (empty($source) || empty($destinationination)) {
+			if (empty($source) || empty($destination)) {
 				$ret->makeBad()
 					->addMessage("Invalid source or destination path provided.");
 
-			} else if (!$this->folderExists($source) || $this->folderExists($destinationination)) {
+			} else if (!$this->folderExists($source) || $this->folderExists($destination)) {
 				$ret->makeBad()
 					->addMessage("Source directory didn't exist or destination folder already exists.");
 			} else {
-				$ret = $this->recursiveCopy($source, $destinationination);
+				$ret = $this->recursiveCopy($source, $destination);
 			}
 
 			return $ret;
