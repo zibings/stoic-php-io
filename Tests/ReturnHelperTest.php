@@ -6,9 +6,10 @@
 	use Stoic\IO\ReturnHelper;
 
 	class ReturnHelperTest extends TestCase {
-		public function test_isGoodAtInitialization() {
+		public function test_isBadAtInitialization() {
 			$ret = new ReturnHelper();
-			$this->assertTrue($ret->isGood());
+			$this->assertTrue($ret->isBad());
+			$this->assertFalse($ret->isGood());
 		}
 
 		public function test_nullMessagesAtInitialization() {
@@ -21,17 +22,18 @@
 			$this->assertEquals(null, $ret->getMessages());
 		}
 
-		public function test_canBeMadeToBadAndGood() {
+		public function test_canBeMadeToGoodAndBad() {
 			$ret = new ReturnHelper();
+			$ret->makeGood();
+
+			$this->assertTrue($ret->isGood());
+			$this->assertFalse($ret->isBad());
+
 			$ret->makeBad();
 
 			$this->assertTrue($ret->isBad());
 			$this->assertFalse($ret->isGood());
 
-			$ret->makeGood();
-
-			$this->assertTrue($ret->isGood());
-			$this->assertFalse($ret->isBad());
 		}
 
 		public function test_addMessage() {

@@ -40,7 +40,7 @@
 		public function __construct() {
 			$this->_messages = array();
 			$this->_results  = array();
-			$this->_status   = self::GOOD;
+			$this->_status   = self::BAD;
 		}
 
 		/**
