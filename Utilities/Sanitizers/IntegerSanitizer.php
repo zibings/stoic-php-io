@@ -1,43 +1,43 @@
 <?php
 
-	namespace Stoic\IO\Sanitizers;
+	namespace Stoic\Utilities\Sanitizers;
 
 	/**
-	 * Class FloatSanitizer
+	 * Class IntegerSanitizer
 	 *
 	 * @package Stoic\IO
 	 * @version 1.0.0
 	 */
-	class FloatSanitizer implements SanitizerInterface {
+	class IntegerSanitizer implements SanitizerInterface {
 
 		/**
-		 * Convert the supplied variable into a float value.
+		 * Convert the supplied variable into an integer value.
 		 *
-		 * @param mixed $input The input that will be sanitized to a float value.
+		 * @param mixed $input The input that will be sanitized to an integer value.
 		 *
 		 * @throws \Exception
 		 *
-		 * @return float
+		 * @return integer
 		 */
 		public function sanitize($input) {
 			try {
 				if (is_object($input)) {
 					$props = get_object_vars($input);
 					$value = count($props);
-					$value = floatval($value);
 
 				} else if (is_array($input)) {
 					$value = count($input);
-					$value = floatval($value);
 
-					// We are removing the period from the input so that strings
-					// which contain float values aren't processed as strings.
+				// We are removing the period from the input so that strings
+				// which contain float values aren't processed as strings.
 				} else if (is_string($input) && !ctype_digit(str_replace('.', '', $input))) {
 					$value = strlen($input);
-					$value = floatval($value);
+
+				} else if (is_float($input)) {
+					$value = round($input);
 
 				} else {
-					$value = floatval($input);
+					$value = intval($input);
 				}
 			} catch (\Exception $ex) {
 				throw $ex;

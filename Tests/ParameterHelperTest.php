@@ -1,13 +1,11 @@
 <?php
 
-	namespace Stoic\IO\Tests;
+	namespace Stoic\Tests\Utilities;
 
-	use phpDocumentor\Reflection\DocBlock\Tags\Param;
 	use PHPUnit\Framework\TestCase;
-	use Stoic\IO\ParameterHelper;
+	use Stoic\Utilities\ParameterHelper;
 
 	class ParameterHelperTest extends TestCase {
-
 		protected $_params = array(
 			'string'  => 'Awesome',
 			'integer' => 42,

@@ -1,14 +1,14 @@
 <?php
 
-	namespace Stoic\IO\Sanitizers;
+	namespace Stoic\Utilities\Sanitizers;
 
 	/**
 	 * Class BooleanSanitizer
 	 *
-	 * @package Stoic\Input
+	 * @package Stoic\IO
 	 * @version 1.0.0
 	 */
-	class JsonSanitizer implements SanitizerInterface {
+	class BooleanSanitizer implements SanitizerInterface {
 
 		/**
 		 * Convert the supplied variable into a boolean value.
@@ -20,13 +20,20 @@
 		 * @return boolean
 		 */
 		public function sanitize($input) {
-			try {
-				if (($value = json_decode($input)) === null) {
-					if (($error = json_last_error_msg()) === null) {
-						$error = "Unable to decode the json.";
-					}
+			$value = false;
 
-					throw new \Exception($error);
+			try {
+				if (is_string($input)) {
+					$input = strtolower($input);
+
+					if ($input == 'false') {
+						$value = false;
+
+					} else if ($input == 'true') {
+						$value = true;
+					}
+				} else {
+					$value = boolval($input);
 				}
 			} catch (\Exception $ex) {
 				throw $ex;

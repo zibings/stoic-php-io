@@ -1,8 +1,8 @@
 <?php
 
-	namespace Stoic\IO;
+	namespace Stoic\Utilities;
 
-	use Stoic\IO\SanitationHelper;
+	use Stoic\Utilities\SanitationHelper;
 
 	/**
 	 * Class ParameterHelper
@@ -11,20 +11,19 @@
 	 * @version 1.0.0
 	 */
 	class ParameterHelper {
-
 		/**
 		 * Array of parameters.
 		 *
 		 * @var array
 		 */
-		private $_parameters = array();
+		private $parameters = array();
 
 		/**
 		 * Sanitation Helper
 		 *
 		 * @var SanitationHelper
 		 */
-		private $_sanitizer = null;
+		private $sanitizer = null;
 
 		/**
 		 * Creates a new ParameterHelper instance.
@@ -37,8 +36,8 @@
 				$sanitizer = new SanitationHelper();
 			}
 
-			$this->_parameters = $params;
-			$this->_sanitizer  = $sanitizer;
+			$this->parameters = $params;
+			$this->sanitizer  = $sanitizer;
 		}
 
 		/**
@@ -47,7 +46,7 @@
 		 * @return int Number of parameters.
 		 */
 		public function count() {
-			return count($this->_parameters);
+			return count($this->parameters);
 		}
 
 		/**
@@ -58,7 +57,7 @@
 		 * @return bool True if key exists in parameter list, false otherwise.
 		 */
 		public function has($key) {
-			return array_key_exists($key, $this->_parameters);
+			return array_key_exists($key, $this->parameters);
 		}
 
 		/**
@@ -74,7 +73,7 @@
 				return $default;
 			}
 
-			return $this->_sanitizer->sanitize($this->_parameters[$key], SanitationHelper::INTEGER);
+			return $this->sanitizer->sanitize($this->parameters[$key], SanitationHelper::INTEGER);
 		}
 
 		/**
@@ -90,7 +89,7 @@
 				return $default;
 			}
 
-			return $this->_sanitizer->sanitize($this->_parameters[$key], SanitationHelper::FLOAT);
+			return $this->sanitizer->sanitize($this->parameters[$key], SanitationHelper::FLOAT);
 		}
 
 		/**
@@ -106,7 +105,7 @@
 				return $default;
 			}
 
-			return $this->_sanitizer->sanitize($this->_parameters[$key], SanitationHelper::BOOLEAN);
+			return $this->sanitizer->sanitize($this->parameters[$key], SanitationHelper::BOOLEAN);
 		}
 
 		/**
@@ -143,7 +142,7 @@
 				return $default;
 			}
 
-			return $this->_sanitizer->sanitize($this->_parameters[$key], SanitationHelper::STRING);
+			return $this->sanitizer->sanitize($this->parameters[$key], SanitationHelper::STRING);
 		}
 
 		/**
@@ -157,18 +156,18 @@
 		 */
 		public function get($key, $default = null, $sanitizer = null) {
 			if ($key === null) {
-				return $this->_parameters;
+				return $this->parameters;
 			}
 
 			if (!$this->has($key)) {
 				return $default;
 			}
 
-			if ($sanitizer !== null && $this->_sanitizer->hasSanitizer($sanitizer)) {
-				return $this->_sanitizer->sanitize($this->_parameters[$key], $sanitizer);
+			if ($sanitizer !== null && $this->sanitizer->hasSanitizer($sanitizer)) {
+				return $this->sanitizer->sanitize($this->parameters[$key], $sanitizer);
 			}
 
-			return $this->_parameters[$key];
+			return $this->parameters[$key];
 		}
 
 		/**
@@ -184,7 +183,7 @@
 				return $this;
 			}
 
-			$this->_parameters[$key] = $value;
+			$this->parameters[$key] = $value;
 
 			return $this;
 		}
@@ -213,7 +212,7 @@
 		 */
 		public function remove($key) {
 			if ($this->has($key)) {
-				unset($this->_parameters[$key]);
+				unset($this->parameters[$key]);
 			}
 
 			return $this;
@@ -225,6 +224,6 @@
 		 * @return void
 		 */
 		public function clear() {
-			$this->_parameters = array();
+			$this->parameters = array();
 		}
 	}

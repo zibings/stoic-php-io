@@ -1,6 +1,6 @@
 <?php
 
-	namespace Stoic\IO\Sanitizers;
+	namespace Stoic\Utilities\Sanitizers;
 
 	/**
 	 * Interface SanitizerInterface
