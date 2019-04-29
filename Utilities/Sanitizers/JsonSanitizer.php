@@ -22,15 +22,19 @@
 		public function sanitize($input) {
 			try {
 				if (($value = json_decode($input)) === null) {
+					// @codeCoverageIgnoreStart
 					if (($error = json_last_error_msg()) === null) {
 						$error = "Unable to decode the json.";
 					}
+					// @codeCoverageIgnoreEnd
 
 					throw new \Exception($error);
 				}
+			// @codeCoverageIgnoreStart
 			} catch (\Exception $ex) {
 				throw $ex;
 			}
+			// @codeCoverageIgnoreEnd
 
 			return $value;
 		}

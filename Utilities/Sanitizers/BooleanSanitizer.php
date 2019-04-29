@@ -35,9 +35,11 @@
 				} else {
 					$value = boolval($input);
 				}
+			// @codeCoverageIgnoreStart
 			} catch (\Exception $ex) {
 				throw $ex;
 			}
+			// @codeCoverageIgnoreEnd
 
 			return $value;
 		}

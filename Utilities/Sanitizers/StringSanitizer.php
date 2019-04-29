@@ -40,9 +40,11 @@
 				} else {
 					$value = (string) $input;
 				}
+			// @codeCoverageIgnoreStart
 			} catch (\Exception $ex) {
 				throw $ex;
 			}
+			// @codeCoverageIgnoreEnd
 
 			return $value;
 		}

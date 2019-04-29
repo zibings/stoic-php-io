@@ -34,14 +34,16 @@
 					$value = strlen($input);
 
 				} else if (is_float($input)) {
-					$value = round($input);
+					$value = intval(round($input));
 
 				} else {
 					$value = intval($input);
 				}
+			// @codeCoverageIgnoreStart
 			} catch (\Exception $ex) {
 				throw $ex;
 			}
+			// @codeCoverageIgnoreEnd
 
 			return $value;
 		}

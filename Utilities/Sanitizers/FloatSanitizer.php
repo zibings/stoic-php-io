@@ -39,9 +39,11 @@
 				} else {
 					$value = floatval($input);
 				}
+			// @codeCoverageIgnoreStart
 			} catch (\Exception $ex) {
 				throw $ex;
 			}
+			// @codeCoverageIgnoreEnd
 
 			return $value;
 		}

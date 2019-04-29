@@ -8,6 +8,7 @@
 	use Stoic\Utilities\Sanitizers\FloatSanitizer;
 	use Stoic\Utilities\Sanitizers\IntegerSanitizer;
 	use Stoic\Utilities\Sanitizers\StringSanitizer;
+	use Stoic\Utilities\Sanitizers\JsonSanitizer;
 
 	class testObject {
 		public $one;
@@ -41,30 +42,40 @@
 			$sanitation = new SanitationHelper();
 			$sanitation->addSanitizer('bool', BooleanSanitizer::class);
 
-			$false = $sanitation->sanitize(false, 'bool');
-			$true  = $sanitation->sanitize(true, 'bool');
-			$zero  = $sanitation->sanitize(0, 'bool');
-			$one   = $sanitation->sanitize(1, 'bool');
-			$empty = $sanitation->sanitize(array(), 'bool');
-			$full  = $sanitation->sanitize(array('one', 'two'), 'bool');
+			$false       = $sanitation->sanitize(false, 'bool');
+			$true        = $sanitation->sanitize(true, 'bool');
+			$zero        = $sanitation->sanitize(0, 'bool');
+			$one         = $sanitation->sanitize(1, 'bool');
+			$empty       = $sanitation->sanitize(array(), 'bool');
+			$full        = $sanitation->sanitize(array('one', 'two'), 'bool');
+			$stringTrue  = $sanitation->sanitize('true', 'bool');
+			$stringFalse = $sanitation->sanitize('false', 'bool');
 
-			$this->assertFalse($false);
-			$this->assertTrue(is_bool($false));
+			self::assertFalse($false);
+			self::assertTrue(is_bool($false));
 
-			$this->assertTrue($true);
-			$this->assertTrue(is_bool($true));
+			self::assertTrue($true);
+			self::assertTrue(is_bool($true));
 
-			$this->assertFalse($zero);
-			$this->assertTrue(is_bool($zero));
+			self::assertFalse($zero);
+			self::assertTrue(is_bool($zero));
 
-			$this->assertTrue($one);
-			$this->assertTrue(is_bool($one));
+			self::assertTrue($one);
+			self::assertTrue(is_bool($one));
 
-			$this->assertFalse($empty);
-			$this->assertTrue(is_bool($empty));
+			self::assertFalse($empty);
+			self::assertTrue(is_bool($empty));
 
-			$this->assertTrue($full);
-			$this->assertTrue(is_bool($full));
+			self::assertTrue($full);
+			self::assertTrue(is_bool($full));
+
+			self::assertTrue($stringTrue);
+			self::assertTrue(is_bool($stringTrue));
+
+			self::assertFalse($stringFalse);
+			self::assertTrue(is_bool($stringTrue));
+
+			return;
 		}
 
 		public function test_stringSanitizer() {
@@ -112,7 +123,7 @@
 			$false     = $sanitation->sanitize(false, 'integer');
 			$string    = $sanitation->sanitize('string', 'integer');
 			$integer   = $sanitation->sanitize('42', 'integer');
-			$float     = $sanitation->sanitize('3.14', 'integer');
+			$float     = $sanitation->sanitize(3.14, 'integer');
 			$actualInt = $sanitation->sanitize(42, 'integer');
 
 			$this->assertEquals(2, $object);
@@ -183,6 +194,22 @@
 
 			$this->assertEquals(6.66, $actualFloat);
 			$this->assertTrue(is_float($actualFloat));
+		}
+
+		public function test_jsonSanitizer() {
+			$sanitation = new SanitationHelper();
+			$sanitation->addSanitizer('json', JsonSanitizer::class);
+
+			try {
+				$sanitation->sanitize('{test: "', 'json');
+				self::assertTrue(false);
+			} catch (\Exception $ex) {
+				self::assertEquals('Syntax error', $ex->getMessage());
+			}
+
+			self::assertTrue(array_key_exists('testing', $sanitation->sanitize('{ "testing": "values" }', 'json')));
+
+			return;
 		}
 
 		public function test_hasSanitizer() {
