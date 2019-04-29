@@ -3,7 +3,6 @@
 	namespace Stoic\Tests\Utilities;
 
 	use PHPUnit\Framework\TestCase;
-	use Stoic\Utilities\Sanitizers\IntegerSanitizer;
 	use Stoic\Utilities\ParameterHelper;
 
 	class ParameterHelperTest extends TestCase {
