@@ -3,6 +3,7 @@
 	namespace Stoic\Tests\Utilities;
 
 	use PHPUnit\Framework\TestCase;
+	use Stoic\Utilities\Sanitizers\IntegerSanitizer;
 	use Stoic\Utilities\ParameterHelper;
 
 	class ParameterHelperTest extends TestCase {
@@ -10,7 +11,7 @@
 			'string'  => 'Awesome',
 			'integer' => 42,
 			'float'   => 3.14,
-			'bool'    => true,
+			'bool'    => true
 		);
 
 		protected $_additional = array(
@@ -68,5 +69,25 @@
 			$ph->remove('name');
 
 			$this->assertFalse($ph->has('name'));
+		}
+
+		public function test_GetValues() {
+			$ph = new ParameterHelper(array_merge($this->_params, [
+				'json' => json_encode(['testing' => 'values'])
+			]));
+
+			self::assertEquals('Awesome', $ph->getString('string'));
+			self::assertEquals(42, $ph->getInt('integer'));
+			self::assertEquals(3.14, $ph->getFloat('float'));
+			self::assertEquals(true, $ph->getBool('bool'));
+			self::assertEquals("Array\n(\n    [testing] => values\n)\n", print_r($ph->getJson('json', true), true));
+			self::assertNull($ph->getJson('notthere'));
+			self::assertEquals("Array\n(\n    [string] => Awesome\n    [integer] => 42\n    [float] => 3.14\n    [bool] => 1\n    [json] => {\"testing\":\"values\"}\n)\n", print_r($ph->get(null), true));
+			self::assertEquals(42, $ph->get('integer', null, 'int'));
+			self::assertTrue($ph->add(true, null) instanceof ParameterHelper);
+
+			$ph->clear();
+
+			return;
 		}
 	}

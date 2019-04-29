@@ -122,8 +122,10 @@
 				return $default;
 			}
 
-			if ( ($json = json_decode($key, $asArray)) === null) {
+			if ( ($json = json_decode($this->parameters[$key], $asArray)) === null) {
+				// @codeCoverageIgnoreStart
 				return $default;
+				// @codeCoverageIgnoreEnd
 			}
 
 			return $json;
