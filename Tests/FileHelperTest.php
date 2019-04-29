@@ -48,7 +48,7 @@
 		public function test_CorePathing() {
 			$io = new CommunicativeFileHelper('./');
 
-			self::assertEquals('./', $io->getCorePath());
+			self::assertEquals('./', $io->getRelativePath());
 			self::assertEquals('./someFile.php', $io->getProcessedPath('~someFile.php'));
 			self::assertEquals('./someFile.php', $io->getProcessedPath('~/someFile.php'));
 			self::assertEquals('./someDir/someFile.php', $io->getProcessedPath('~someDir/someFile.php'));

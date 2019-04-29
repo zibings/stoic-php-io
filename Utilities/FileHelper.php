@@ -160,16 +160,6 @@
 		}
 
 		/**
-		 * Retrieves the stored core path value for this
-		 * instance.
-		 *
-		 * @return string
-		 */
-		public function getCorePath() {
-			return $this->relativePath;
-		}
-
-		/**
 		 * Retrieves all file names in a folder non-recursively.
 		 *
 		 * @param string $path  String value of folder path.
@@ -199,6 +189,16 @@
 		 */
 		public function getFolderItems($path, $recursive = false) {
 			return $this->globFolder($path, FileHelperGlobs::GLOB_ALL, $recursive);
+		}
+
+		/**
+		 * Retrieves the stored relative path value for this
+		 * instance.
+		 *
+		 * @return string
+		 */
+		public function getRelativePath() {
+			return $this->relativePath;
 		}
 
 		/**

@@ -32,7 +32,7 @@
 		 *
 		 * @var FileHelper
 		 */
-		protected $io = null;
+		protected $fh = null;
 		/**
 		 * Path to the output file.
 		 *
@@ -56,20 +56,20 @@
 		 * @param integer $outputType Optional integer value representing the output type.
 		 * @throws \InvalidArgumentException Thrown when an invalid output type is supplied.
 		 */
-		public function __construct(FileHelper $io, $outputFile, $outputType = LogFileOutputTypes::PLAIN) {
+		public function __construct(FileHelper $fh, $outputFile, $outputType = LogFileOutputTypes::PLAIN) {
 			if (!LogFileOutputTypes::validValue($outputType)) {
 				throw new \InvalidArgumentException("Invalid output type supplied");
 			}
 
-			$this->io = $io;
+			$this->fh = $fh;
 			$this->outputFile = $outputFile;
-			$this->outputType = new LogFileOutputTypes($outputType);
+			$this->outputType = EnumBase::tryGetEnum($outputType, LogFileOutputTypes::class);
 
-			if (!$this->io->fileExists($this->outputFile)) {
-				$this->io->touchFile($this->outputFile);
+			if (!$this->fh->fileExists($this->outputFile)) {
+				$this->fh->touchFile($this->outputFile);
 			}
 
-			$this->outputFile = realpath($this->io->pathJoin($this->outputFile));
+			$this->outputFile = realpath($this->fh->pathJoin($this->outputFile));
 			$this->setKey('LogFileAppender');
 			$this->setVersion('1.0');
 
@@ -107,7 +107,7 @@
 					$output->append(PHP_EOL);
 				}
 
-				$this->io->putContents($this->outputFile, $output->data(), FILE_APPEND);
+				$this->fh->putContents($this->outputFile, $output->data(), FILE_APPEND);
 			}
 
 			return;
