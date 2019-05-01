@@ -1,6 +1,6 @@
 <?php
 
-	namespace Stoic\IO\Sanitizers;
+	namespace Stoic\Utilities\Sanitizers;
 
 	/**
 	 * Class BooleanSanitizer
@@ -35,9 +35,11 @@
 				} else {
 					$value = boolval($input);
 				}
+			// @codeCoverageIgnoreStart
 			} catch (\Exception $ex) {
 				throw $ex;
 			}
+			// @codeCoverageIgnoreEnd
 
 			return $value;
 		}

@@ -1,12 +1,12 @@
 <?php
 
-	namespace Stoic\IO;
+	namespace Stoic\Utilities;
 
-	use Stoic\IO\Sanitizers\SanitizerInterface;
-	use Stoic\IO\Sanitizers\BooleanSanitizer;
-	use Stoic\IO\Sanitizers\IntegerSanitizer;
-	use Stoic\IO\Sanitizers\FloatSanitizer;
-	use Stoic\IO\Sanitizers\StringSanitizer;
+	use Stoic\Utilities\Sanitizers\SanitizerInterface;
+	use Stoic\Utilities\Sanitizers\BooleanSanitizer;
+	use Stoic\Utilities\Sanitizers\IntegerSanitizer;
+	use Stoic\Utilities\Sanitizers\FloatSanitizer;
+	use Stoic\Utilities\Sanitizers\StringSanitizer;
 
 	/**
 	 * Class SanitationHelper

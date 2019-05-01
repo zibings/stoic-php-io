@@ -258,3 +258,5 @@ paket-files/
 # Composer files
 composer.lock
 vendor/
+/coverage
+/reports

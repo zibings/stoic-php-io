@@ -1,11 +1,11 @@
 <?php
 
-	namespace Stoic\IO\Sanitizers;
+	namespace Stoic\Utilities\Sanitizers;
 
 	/**
 	 * Class BooleanSanitizer
 	 *
-	 * @package Stoic\Input
+	 * @package Stoic\IO
 	 * @version 1.0.0
 	 */
 	class JsonSanitizer implements SanitizerInterface {
@@ -22,15 +22,19 @@
 		public function sanitize($input) {
 			try {
 				if (($value = json_decode($input)) === null) {
+					// @codeCoverageIgnoreStart
 					if (($error = json_last_error_msg()) === null) {
 						$error = "Unable to decode the json.";
 					}
+					// @codeCoverageIgnoreEnd
 
 					throw new \Exception($error);
 				}
+			// @codeCoverageIgnoreStart
 			} catch (\Exception $ex) {
 				throw $ex;
 			}
+			// @codeCoverageIgnoreEnd
 
 			return $value;
 		}
