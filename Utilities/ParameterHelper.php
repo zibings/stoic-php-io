@@ -5,7 +5,7 @@
 	use Stoic\Utilities\SanitationHelper;
 
 	/**
-	 * Class ParameterHelper
+	 * ParameterHelper to collect and serve parameters as typed values.
 	 *
 	 * @package Stoic\IO
 	 * @version 1.0.0
@@ -16,14 +16,14 @@
 		 *
 		 * @var array
 		 */
-		private $parameters = array();
-
+		protected $parameters = array();
 		/**
 		 * Sanitation Helper
 		 *
 		 * @var SanitationHelper
 		 */
-		private $sanitizer = null;
+		protected $sanitizer = null;
+
 
 		/**
 		 * Creates a new ParameterHelper instance.
@@ -38,6 +38,8 @@
 
 			$this->parameters = $params;
 			$this->sanitizer  = $sanitizer;
+
+			return;
 		}
 
 		/**
@@ -45,7 +47,7 @@
 		 *
 		 * @return int Number of parameters.
 		 */
-		public function count() {
+		public function count() : int {
 			return count($this->parameters);
 		}
 
@@ -56,7 +58,7 @@
 		 *
 		 * @return bool True if key exists in parameter list, false otherwise.
 		 */
-		public function has($key) {
+		public function has(string $key) : bool {
 			return array_key_exists($key, $this->parameters);
 		}
 
@@ -68,7 +70,7 @@
 		 *
 		 * @return int Integer value of key or default value if not present.
 		 */
-		public function getInt($key, $default = null) {
+		public function getInt(string $key, $default = null) : int {
 			if (!$this->has($key)) {
 				return $default;
 			}
@@ -84,7 +86,7 @@
 		 *
 		 * @return float Float value of key or default value if not present.
 		 */
-		public function getFloat($key, $default = null) {
+		public function getFloat(string $key, $default = null) : float {
 			if (!$this->has($key)) {
 				return $default;
 			}
@@ -100,7 +102,7 @@
 		 *
 		 * @return bool Bool value of key or default value if not present.
 		 */
-		public function getBool($key, $default = null) {
+		public function getBool(string $key, $default = null) : bool {
 			if (!$this->has($key)) {
 				return $default;
 			}
@@ -117,7 +119,7 @@
 		 *
 		 * @return mixed Mixed value of key or default value if not present.
 		 */
-		public function getJson($key, $asArray = false, $default = null) {
+		public function getJson(string $key, $asArray = false, $default = null) {
 			if (!$this->has($key)) {
 				return $default;
 			}
@@ -139,7 +141,7 @@
 		 *
 		 * @return string String value of key or default value if not present.
 		 */
-		public function getString($key, $default = null) {
+		public function getString(string $key, $default = null) : string {
 			if (!$this->has($key)) {
 				return $default;
 			}
@@ -156,7 +158,7 @@
 		 *
 		 * @return mixed Mixed The value of the key if found or default value if not present.
 		 */
-		public function get($key, $default = null, $sanitizer = null) {
+		public function get(string $key, $default = null, string $sanitizer = null) {
 			if ($key === null) {
 				return $this->parameters;
 			}
@@ -170,62 +172,5 @@
 			}
 
 			return $this->parameters[$key];
-		}
-
-		/**
-		 * Sets a new key/pair value.
-		 *
-		 * @param string $key   The name of the value we are setting.
-		 * @param mixed  $value The value that we are setting.
-		 *
-		 * @return $this
-		 */
-		public function add($key, $value) {
-			if (!is_string($key) && !is_int($key)) {
-				return $this;
-			}
-
-			$this->parameters[$key] = $value;
-
-			return $this;
-		}
-
-		/**
-		 * Adds multiple key/value pairs to the parameters array.
-		 *
-		 * @param array $params
-		 *
-		 * @return $this
-		 */
-		public function addValues(array $params) {
-			foreach ($params as $key => $value) {
-				$this->add($key, $value);
-			}
-
-			return $this;
-		}
-
-		/**
-		 * Remove a key/value pair from the parameters.
-		 *
-		 * @param string $key The name of the value we are removing.
-		 *
-		 * @return $this
-		 */
-		public function remove($key) {
-			if ($this->has($key)) {
-				unset($this->parameters[$key]);
-			}
-
-			return $this;
-		}
-
-		/**
-		 * Clears all the values from the parameter array.
-		 *
-		 * @return void
-		 */
-		public function clear() {
-			$this->parameters = array();
 		}
 	}
