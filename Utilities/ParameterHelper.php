@@ -158,7 +158,7 @@
 		 *
 		 * @return mixed Mixed The value of the key if found or default value if not present.
 		 */
-		public function get(string $key, $default = null, string $sanitizer = null) {
+		public function get($key, $default = null, $sanitizer = null) {
 			if ($key === null) {
 				return $this->parameters;
 			}

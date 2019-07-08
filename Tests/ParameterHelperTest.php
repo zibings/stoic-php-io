@@ -43,33 +43,6 @@
 			$this->assertEquals(18.5, $ph->getFloat('non-existent', 18.5));
 		}
 
-		public function test_addValue() {
-			$ph = new ParameterHelper($this->_params);
-			$ph->add('name', 'Chris');
-
-			$this->assertTrue($ph->has('name'));
-			$this->assertEquals('Chris', $ph->get('name'));
-		}
-
-		public function test_addValues() {
-			$ph = new ParameterHelper();
-			$ph->addValues($this->_additional);
-
-			$this->assertTrue($ph->has('age'));
-			$this->assertEquals(4, $ph->count());
-		}
-
-		public function test_removeValue() {
-			$ph = new ParameterHelper();
-			$ph->add('name', 'Test');
-
-			$this->assertTrue($ph->has('name'));
-
-			$ph->remove('name');
-
-			$this->assertFalse($ph->has('name'));
-		}
-
 		public function test_GetValues() {
 			$ph = new ParameterHelper(array_merge($this->_params, [
 				'json' => json_encode(['testing' => 'values'])
@@ -83,9 +56,6 @@
 			self::assertNull($ph->getJson('notthere'));
 			self::assertEquals("Array\n(\n    [string] => Awesome\n    [integer] => 42\n    [float] => 3.14\n    [bool] => 1\n    [json] => {\"testing\":\"values\"}\n)\n", print_r($ph->get(null), true));
 			self::assertEquals(42, $ph->get('integer', null, 'int'));
-			self::assertTrue($ph->add(true, null) instanceof ParameterHelper);
-
-			$ph->clear();
 
 			return;
 		}
