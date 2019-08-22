@@ -60,4 +60,32 @@
 
 			return;
 		}
+
+		public function test_MutateParams() {
+			$ph = new ParameterHelper($this->_params);
+			self::assertEquals(4, $ph->count());
+
+			$ph1 = $ph->withParameter('test1', 'test1');
+			self::assertEquals(4, $ph->count());
+			self::assertEquals(5, $ph1->count());
+			self::assertEquals('test1', $ph1->getString('test1'));
+
+			$ph2 = $ph->withParameters(['test1' => 'test1', 'test2' => 'test2']);
+			self::assertEquals(4, $ph->count());
+			self::assertEquals(6, $ph2->count());
+			self::assertEquals('test1', $ph2->getString('test1'));
+
+			$ph3 = $ph1->withoutParameter('test1');
+			self::assertEquals(5, $ph1->count());
+			self::assertEquals(4, $ph3->count());
+			self::assertNull($ph3->get('test1'));
+
+			$ph4 = $ph2->withoutParameters(['test1', 'test2']);
+			self::assertEquals(6, $ph2->count());
+			self::assertEquals(4, $ph4->count());
+			self::assertNull($ph4->get('test1'));
+			self::assertNull($ph4->get('test2'));
+
+			return;
+		}
 	}
