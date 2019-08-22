@@ -19,10 +19,6 @@
 		 * @return $this
 		 */
 		public function add(string $key, $value) : MutableParameterHelper {
-			if (!is_string($key) && !is_int($key)) {
-				return $this;
-			}
-
 			$this->parameters[$key] = $value;
 
 			return $this;

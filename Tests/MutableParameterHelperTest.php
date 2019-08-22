@@ -3,9 +3,9 @@
 	namespace Stoic\Tests\Utilities;
 
 	use PHPUnit\Framework\TestCase;
-	use Stoic\Utilities\ParameterHelper;
+	use Stoic\Utilities\MutableParameterHelper;
 
-	class ParameterHelperTest extends TestCase {
+	class MutableParameterHelperTest extends TestCase {
 		protected $_params = array(
 			'string'  => 'Awesome',
 			'integer' => 42,
@@ -21,20 +21,20 @@
 		);
 
 		public function test_numValues() {
-			$ph = new ParameterHelper($this->_params);
+			$ph = new MutableParameterHelper($this->_params);
 
 			$this->assertEquals(4, $ph->count());
 		}
 
 		public function test_hasValue() {
-			$ph = new ParameterHelper($this->_params);
+			$ph = new MutableParameterHelper($this->_params);
 
 			$this->assertTrue($ph->has('string'));
 			$this->assertFalse($ph->has('non-existent'));
 		}
 
 		public function test_getDefaultValues() {
-			$ph = new ParameterHelper();
+			$ph = new MutableParameterHelper();
 
 			$this->assertEquals('Chris', $ph->get('non-existent', 'Chris'));
 			$this->assertEquals(123, $ph->getInt('non-existent', 123));
@@ -44,7 +44,7 @@
 		}
 
 		public function test_GetValues() {
-			$ph = new ParameterHelper(array_merge($this->_params, [
+			$ph = new MutableParameterHelper(array_merge($this->_params, [
 				'json' => json_encode(['testing' => 'values'])
 			]));
 
@@ -57,6 +57,34 @@
 			self::assertEquals("Array\n(\n    [string] => Awesome\n    [integer] => 42\n    [float] => 3.14\n    [bool] => 1\n    [json] => {\"testing\":\"values\"}\n)\n", print_r($ph->get(null), true));
 			self::assertEquals(42, $ph->get('integer', null, 'int'));
 			self::assertEquals(42, $ph->get('integer'));
+
+			return;
+		}
+
+		public function test_addValues() {
+			$ph = new MutableParameterHelper();
+			$ph->addValues($this->_additional);
+			$this->assertTrue($ph->has('age'));
+			$this->assertEquals(4, $ph->count());
+
+			return;
+		}
+
+		public function test_removeValue() {
+			$ph = new MutableParameterHelper();
+			$ph->add('name', 'Test');
+			$this->assertTrue($ph->has('name'));
+			$ph->remove('name');
+			$this->assertFalse($ph->has('name'));
+
+			return;
+		}
+
+		public function test_Clear() {
+			$ph = new MutableParameterHelper(['int' => 42]);
+			$ph->clear();
+
+			self::assertEquals(0, $ph->count());
 
 			return;
 		}
