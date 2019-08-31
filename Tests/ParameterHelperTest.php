@@ -43,33 +43,6 @@
 			$this->assertEquals(18.5, $ph->getFloat('non-existent', 18.5));
 		}
 
-		public function test_addValue() {
-			$ph = new ParameterHelper($this->_params);
-			$ph->add('name', 'Chris');
-
-			$this->assertTrue($ph->has('name'));
-			$this->assertEquals('Chris', $ph->get('name'));
-		}
-
-		public function test_addValues() {
-			$ph = new ParameterHelper();
-			$ph->addValues($this->_additional);
-
-			$this->assertTrue($ph->has('age'));
-			$this->assertEquals(4, $ph->count());
-		}
-
-		public function test_removeValue() {
-			$ph = new ParameterHelper();
-			$ph->add('name', 'Test');
-
-			$this->assertTrue($ph->has('name'));
-
-			$ph->remove('name');
-
-			$this->assertFalse($ph->has('name'));
-		}
-
 		public function test_GetValues() {
 			$ph = new ParameterHelper(array_merge($this->_params, [
 				'json' => json_encode(['testing' => 'values'])
@@ -83,9 +56,35 @@
 			self::assertNull($ph->getJson('notthere'));
 			self::assertEquals("Array\n(\n    [string] => Awesome\n    [integer] => 42\n    [float] => 3.14\n    [bool] => 1\n    [json] => {\"testing\":\"values\"}\n)\n", print_r($ph->get(null), true));
 			self::assertEquals(42, $ph->get('integer', null, 'int'));
-			self::assertTrue($ph->add(true, null) instanceof ParameterHelper);
+			self::assertEquals(42, $ph->get('integer'));
 
-			$ph->clear();
+			return;
+		}
+
+		public function test_MutateParams() {
+			$ph = new ParameterHelper($this->_params);
+			self::assertEquals(4, $ph->count());
+
+			$ph1 = $ph->withParameter('test1', 'test1');
+			self::assertEquals(4, $ph->count());
+			self::assertEquals(5, $ph1->count());
+			self::assertEquals('test1', $ph1->getString('test1'));
+
+			$ph2 = $ph->withParameters(['test1' => 'test1', 'test2' => 'test2']);
+			self::assertEquals(4, $ph->count());
+			self::assertEquals(6, $ph2->count());
+			self::assertEquals('test1', $ph2->getString('test1'));
+
+			$ph3 = $ph1->withoutParameter('test1');
+			self::assertEquals(5, $ph1->count());
+			self::assertEquals(4, $ph3->count());
+			self::assertNull($ph3->get('test1'));
+
+			$ph4 = $ph2->withoutParameters(['test1', 'test2']);
+			self::assertEquals(6, $ph2->count());
+			self::assertEquals(4, $ph4->count());
+			self::assertNull($ph4->get('test1'));
+			self::assertNull($ph4->get('test2'));
 
 			return;
 		}
