@@ -82,7 +82,7 @@
 		 * @param bool|null $default Optional Default value that is returned if key is not found.
 		 * @return bool Bool value of key or default value if not present.
 		 */
-		public function getBool(string $key, $default = null) : bool {
+		public function getBool(string $key, $default = null) : ?bool {
 			if (!$this->has($key)) {
 				return $default;
 			}
@@ -97,7 +97,7 @@
 		 * @param float|null $default Optional Default value that is returned if key is not found.
 		 * @return float Float value of key or default value if not present.
 		 */
-		public function getFloat(string $key, $default = null) : float {
+		public function getFloat(string $key, $default = null) : ?float {
 			if (!$this->has($key)) {
 				return $default;
 			}
@@ -112,7 +112,7 @@
 		 * @param integer|null $default Optional Default value that is returned if key is not found.
 		 * @return int Integer value of key or default value if not present.
 		 */
-		public function getInt(string $key, $default = null) : int {
+		public function getInt(string $key, $default = null) : ?int {
 			if (!$this->has($key)) {
 				return $default;
 			}
@@ -149,7 +149,7 @@
 		 * @param mixed $default Optional Default value that is returned if key is not found.
 		 * @return string String value of key or default value if not present.
 		 */
-		public function getString(string $key, $default = null) : string {
+		public function getString(string $key, $default = null) : ?string {
 			if (!$this->has($key)) {
 				return $default;
 			}

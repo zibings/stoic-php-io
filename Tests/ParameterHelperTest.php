@@ -36,11 +36,18 @@
 		public function test_getDefaultValues() {
 			$ph = new ParameterHelper();
 
-			$this->assertEquals('Chris', $ph->get('non-existent', 'Chris'));
-			$this->assertEquals(123, $ph->getInt('non-existent', 123));
-			$this->assertEquals(true, $ph->getBool('non-existent', true));
-			$this->assertEquals('Test', $ph->getString('non-existent', 'Test'));
-			$this->assertEquals(18.5, $ph->getFloat('non-existent', 18.5));
+			self::assertEquals('Chris', $ph->get('non-existent', 'Chris'));
+			self::assertEquals(123, $ph->getInt('non-existent', 123));
+			self::assertEquals(true, $ph->getBool('non-existent', true));
+			self::assertEquals('Test', $ph->getString('non-existent', 'Test'));
+			self::assertEquals(18.5, $ph->getFloat('non-existent', 18.5));
+			self::assertNull($ph->get('non-existent'));
+			self::assertNull($ph->getBool('non-existent'));
+			self::assertNull($ph->getFloat('non-existent'));
+			self::assertNull($ph->getInt('non-existent'));
+			self::assertNull($ph->getString('non-existent'));
+
+			return;
 		}
 
 		public function test_GetValues() {
