@@ -6,20 +6,17 @@
 	 * Class BooleanSanitizer
 	 *
 	 * @package Stoic\IO
-	 * @version 1.0.0
+	 * @version 1.0.1
 	 */
 	class BooleanSanitizer implements SanitizerInterface {
-
 		/**
 		 * Convert the supplied variable into a boolean value.
 		 *
 		 * @param mixed $input The input that will be sanitized to a boolean value.
-		 *
 		 * @throws \Exception
-		 *
 		 * @return boolean
 		 */
-		public function sanitize($input) {
+		public function sanitize($input) : bool {
 			$value = false;
 
 			try {

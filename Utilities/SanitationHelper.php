@@ -12,10 +12,9 @@
 	 * Class SanitationHelper
 	 *
 	 * @package Stoic\IO
-	 * @version 1.0.0
+	 * @version 1.0.1
 	 */
 	class SanitationHelper {
-
 		const BOOLEAN = 'bool';
 		const INTEGER = 'int';
 		const FLOAT   = 'float';
@@ -26,19 +25,19 @@
 		 *
 		 * @var string[]
 		 */
-		protected $_defaults = array(
+		protected $_defaults = [
 			self::BOOLEAN => BooleanSanitizer::class,
 			self::INTEGER => IntegerSanitizer::class,
 			self::FLOAT   => FloatSanitizer::class,
 			self::STRING  => StringSanitizer::class,
-		);
+		];
 
 		/**
 		 * List of all the instantiated sanitizers.
 		 *
 		 * @var SanitizerInterface[]
 		 */
-		protected $_sanitizers = array();
+		protected $_sanitizers = [];
 
 		/**
 		 * SanitationHelper constructor.
@@ -49,17 +48,18 @@
 			foreach ($this->_defaults as $name => $class) {
 				$this->addSanitizer($name, $class);
 			}
+
+			return;
 		}
 
 		/**
 		 * Add a new sanitation type.
 		 *
-		 * @param string $key       The key, which is a string value, that described the sanitizer being added.
+		 * @param string $key The key, which is a string value, that described the sanitizer being added.
 		 * @param string $sanitizer The instance of the sanitizer class, or a fully qualified domain name of the class.
-		 *
-		 * @return $this
+		 * @return SanitationHelper
 		 */
-		public function addSanitizer($key, $sanitizer) {
+		public function addSanitizer(string $key, string $sanitizer) : SanitationHelper {
 			if (is_object($sanitizer) && ($sanitizer instanceof SanitizerInterface)) {
 				$this->_sanitizers[$key]= $sanitizer;
 
@@ -74,22 +74,20 @@
 		 * Check whether a sanitation type exists.
 		 *
 		 * @param string $key The key, which is a string value, of the sanitizer that is being searched for.
-		 *
-		 * @return bool
+		 * @return boolean
 		 */
-		public function hasSanitizer($key) {
+		public function hasSanitizer(string $key) : bool {
 			return isset($this->_sanitizers[$key]);
 		}
 
 		/**
 		 * Converts the supplied input to a specific value.
 		 *
-		 * @param mixed  $input The value that is going to be sanitized.
-		 * @param string $key   The key, which is a string value, for the sanitizer that will be used.
-		 *
+		 * @param mixed $input The value that is going to be sanitized.
+		 * @param string $key The key, which is a string value, for the sanitizer that will be used.
 		 * @return mixed
 		 */
-		public function sanitize($input, $key) {
+		public function sanitize($input, string $key) {
 			if (!$this->hasSanitizer($key)) {
 				return $input;
 			}

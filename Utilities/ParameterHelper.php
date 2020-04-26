@@ -2,13 +2,11 @@
 
 	namespace Stoic\Utilities;
 
-	use Stoic\Utilities\SanitationHelper;
-
 	/**
 	 * ParameterHelper to collect and serve parameters as typed values.
 	 *
 	 * @package Stoic\IO
-	 * @version 1.0.0
+	 * @version 1.0.1
 	 */
 	class ParameterHelper {
 		/**
@@ -16,7 +14,7 @@
 		 *
 		 * @var array
 		 */
-		protected $parameters = array();
+		protected $parameters = [];
 		/**
 		 * Sanitation Helper
 		 *
@@ -28,7 +26,7 @@
 		/**
 		 * Creates a new ParameterHelper instance.
 		 *
-		 * @param array            $params    Array of parameters to dispense.
+		 * @param array $params Array of parameters to dispense.
 		 * @param SanitationHelper $sanitizer Helper class that sanitizes values to a specific type.
 		 */
 		public function __construct(array $params = array(), SanitationHelper $sanitizer = null) {
@@ -45,7 +43,7 @@
 		/**
 		 * Returns the number of values in the parameter list.
 		 *
-		 * @return int Number of parameters.
+		 * @return integer
 		 */
 		public function count() : int {
 			return count($this->parameters);
@@ -54,12 +52,12 @@
 		/**
 		 * Returns a raw parameter value.
 		 *
-		 * @param string $key       The name of the key/value pair we are looking for.
-		 * @param mixed  $default   Optional Default value that is returned if key is not found.
+		 * @param string $key The name of the key/value pair we are looking for.
+		 * @param mixed $default Optional Default value that is returned if key is not found.
 		 * @param string $sanitizer The name of the sanitizer that will be used to cleanse the value.
-		 * @return mixed Mixed The value of the key if found or default value if not present.
+		 * @return mixed
 		 */
-		public function get($key, $default = null, $sanitizer = null) {
+		public function get(string $key, $default = null, string $sanitizer = null) {
 			if ($key === null) {
 				return $this->parameters;
 			}
@@ -78,11 +76,11 @@
 		/**
 		 * Returns a parameter cast as a bool.
 		 *
-		 * @param string    $key     The name of the key/value pair we are looking for.
-		 * @param bool|null $default Optional Default value that is returned if key is not found.
-		 * @return bool Bool value of key or default value if not present.
+		 * @param string $key The name of the key/value pair we are looking for.
+		 * @param null|boolean $default Optional Default value that is returned if key is not found.
+		 * @return null|boolean
 		 */
-		public function getBool(string $key, $default = null) : ?bool {
+		public function getBool(string $key, ?bool $default = null) : ?bool {
 			if (!$this->has($key)) {
 				return $default;
 			}
@@ -93,11 +91,11 @@
 		/**
 		 * Returns a parameter cast as a float.
 		 *
-		 * @param string     $key     The name of the key/value pair we are looking for.
-		 * @param float|null $default Optional Default value that is returned if key is not found.
-		 * @return float Float value of key or default value if not present.
+		 * @param string $key The name of the key/value pair we are looking for.
+		 * @param null|float $default Optional Default value that is returned if key is not found.
+		 * @return float
 		 */
-		public function getFloat(string $key, $default = null) : ?float {
+		public function getFloat(string $key, ?float $default = null) : ?float {
 			if (!$this->has($key)) {
 				return $default;
 			}
@@ -108,11 +106,11 @@
 		/**
 		 * Returns a parameter cast as an integer.
 		 *
-		 * @param string       $key     The name of the key/value pair we are looking for.
-		 * @param integer|null $default Optional Default value that is returned if key is not found.
-		 * @return int Integer value of key or default value if not present.
+		 * @param string $key The name of the key/value pair we are looking for.
+		 * @param null|integer $default Optional Default value that is returned if key is not found.
+		 * @return integer
 		 */
-		public function getInt(string $key, $default = null) : ?int {
+		public function getInt(string $key, ?int $default = null) : ?int {
 			if (!$this->has($key)) {
 				return $default;
 			}
@@ -123,12 +121,12 @@
 		/**
 		 * Returns a parameter cast as decoded JSON data.
 		 *
-		 * @param string $key     The name of the key/value pair we are looking for.
-		 * @param bool   $asArray Force the json to be returned as an associative array.
-		 * @param mixed  $default Optional Default value that is returned if key is not found.
-		 * @return mixed Mixed value of key or default value if not present.
+		 * @param string $key The name of the key/value pair we are looking for.
+		 * @param boolean $asArray Force the json to be returned as an associative array.
+		 * @param mixed $default Optional Default value that is returned if key is not found.
+		 * @return mixed
 		 */
-		public function getJson(string $key, $asArray = false, $default = null) {
+		public function getJson(string $key, bool $asArray = false, $default = null) {
 			if (!$this->has($key)) {
 				return $default;
 			}
@@ -161,7 +159,7 @@
 		 * Check if a value exists within the parameter list.
 		 *
 		 * @param string $key The name of the key/value pair we are looking for.
-		 * @return bool True if key exists in parameter list, false otherwise.
+		 * @return boolean
 		 */
 		public function has(string $key) : bool {
 			return array_key_exists($key, $this->parameters);

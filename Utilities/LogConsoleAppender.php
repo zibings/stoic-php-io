@@ -10,7 +10,7 @@
 	 * Appender that outputs messages to stdout.
 	 *
 	 * @package Stoic\IO
-	 * @version 1.0.0
+	 * @version 1.0.1
 	 */
 	class LogConsoleAppender extends AppenderBase {
 		/**
@@ -42,7 +42,7 @@
 		 * @param DispatchBase $dispatch Dispatch object to process.
 		 * @return void
 		 */
-		public function process($sender, DispatchBase &$dispatch) {
+		public function process($sender, DispatchBase &$dispatch) : void {
 			if (!($dispatch instanceof MessageDispatch)) {
 				return;
 			}

@@ -7,7 +7,6 @@
 	use Stoic\Utilities\LogFileAppender;
 	use Stoic\Utilities\LogFileOutputTypes;
 	use Stoic\Chain\ChainHelper;
-	use Stoic\Chain\DispatchBase;
 	use Psr\Log\LogLevel;
 	use Stoic\Log\Message;
 	use Stoic\Log\MessageDispatch;
@@ -53,8 +52,8 @@
 			$contents = $io->getContents($logFile);
 			$io->removeFile($logFile);
 
-			self::assertTrue(stripos($contents, '"message": "This is a critical message"') !== false);
-			self::assertTrue(stripos($contents, '"message": "This is an info message"') !== false);
+			self::assertTrue(stripos($contents, '"This is a critical message"') !== false);
+			self::assertTrue(stripos($contents, '"This is an info message"') !== false);
 
 			$nmDisp = new NonMessageDispatch();
 			$nmDisp->initialize(null);

@@ -7,7 +7,7 @@
 	 * calls.
 	 *
 	 * @package Stoic\IO
-	 * @version 1.0.0
+	 * @version 1.0.1
 	 */
 	class StringJoinOptions {
 		/**
@@ -31,7 +31,7 @@
 		 * @param string $glue String value to use as glue between tokens.
 		 * @param boolean $guardGlue Whether or not to discourage duplication of glue string.
 		 */
-		public function __construct($glue, $guardGlue) {
+		public function __construct(string $glue, bool $guardGlue) {
 			$this->glue = $glue;
 			$this->guardGlue = $guardGlue;
 
@@ -44,7 +44,7 @@
 	 * working with strings.
 	 *
 	 * @package Stoic\IO
-	 * @version 1.0.0
+	 * @version 1.0.1
 	 */
 	class StringHelper {
 		const CMP_STRPOS = 'strpos';
@@ -85,7 +85,7 @@
 		 * @param string|StringHelper $string String to append to (or initialize as) internal data store.
 		 * @return void
 		 */
-		public function append($string) {
+		public function append($string) : void {
 			if ($string instanceof StringHelper) {
 				$string = $string->data();
 			}
@@ -107,7 +107,7 @@
 		 * @param integer $position Value of position to retrieve character within string.
 		 * @return string
 		 */
-		public function at($position) {
+		public function at(int $position) : string {
 			if ($this->_data === null || $position < 0 || $position > $this->_length) {
 				throw new \OutOfRangeException("Position is out of the bounds of the internal data store");
 			}
@@ -120,7 +120,7 @@
 		 *
 		 * @return void
 		 */
-		public function clear() {
+		public function clear() : void {
 			$this->_data = null;
 			$this->_length = 0;
 
@@ -136,7 +136,7 @@
 		 * @param boolean $caseInsensitive Optional toggle for case sensitivity in comparison, defaults to sensitive.
 		 * @return boolean|integer
 		 */
-		public function compare($string, $length = null, $caseInsensitive = false) {
+		public function compare($string, ?int $length = null, bool $caseInsensitive = false) {
 			if ($this->_data === null) {
 				return false;
 			}
@@ -161,7 +161,7 @@
 		 *
 		 * @return StringHelper
 		 */
-		public function copy() {
+		public function copy() : StringHelper {
 			return clone $this;
 		}
 
@@ -170,7 +170,7 @@
 		 *
 		 * @return null|string
 		 */
-		public function data() {
+		public function data() : ?string {
 			return $this->_data;
 		}
 
@@ -182,7 +182,7 @@
 		 * @param boolean $caseInsensitive Optional toggle for case sensitivity of comparison.
 		 * @return boolean
 		 */
-		public function endsWith($string, $caseInsensitive = false) {
+		public function endsWith($string, bool $caseInsensitive = false) : bool {
 			$length = strlen($string);
 			$endWord = substr($this->_data, -($length + 1));
 			$cmpFunction = ($caseInsensitive === false) ? self::CMP_STRPOS : self::CMP_STRIPOS;
@@ -192,13 +192,14 @@
 
 		/**
 		 * Attempts to find a string within the internal data store,
-		 * with optional position
+		 * with optional position.
+		 *
 		 * @param string|StringHelper $string Another string (or string object) to find within store.
 		 * @param null|integer $position Optional position of first character in internal data store to use for searching.
 		 * @param boolean $caseInsensitive Optional toggle for case sensitivity in searching, defaults to sensitive.
 		 * @return boolean|integer
 		 */
-		public function find($string, $position = null, $caseInsensitive = false) {
+		public function find($string, ?int $position = null, bool $caseInsensitive = false) {
 			if ($this->_data === null) {
 				return false;
 			}
@@ -222,7 +223,7 @@
 		 *
 		 * @return null|string
 		 */
-		public function firstChar() {
+		public function firstChar() : ?string {
 			if ($this->_data === null) {
 				return null;
 			}
@@ -236,7 +237,7 @@
 		 *
 		 * @return boolean
 		 */
-		public function isEmptyOrNull() {
+		public function isEmptyOrNull() : bool {
 			return $this->_data === null || $this->_length == 0;
 		}
 
@@ -246,7 +247,7 @@
 		 *
 		 * @return boolean
 		 */
-		public function isEmptyOrNullOrWhitespace() {
+		public function isEmptyOrNullOrWhitespace() : bool {
 			return $this->_data === null || $this->_length == 0 || ctype_space($this->_data);
 		}
 
@@ -256,7 +257,7 @@
 		 *
 		 * @return null|string
 		 */
-		public function lastChar() {
+		public function lastChar() : ?string {
 			if ($this->_data === null) {
 				return null;
 			}
@@ -269,7 +270,7 @@
 		 *
 		 * @return integer
 		 */
-		public function length() {
+		public function length() : int {
 			return $this->_length;
 		}
 
@@ -282,7 +283,7 @@
 		 * @param mixed $count Optional parameter to hold the number of replacements performed.
 		 * @return void
 		 */
-		public function replace($search, $replace, &$count = null) {
+		public function replace($search, $replace, &$count = null) : void {
 			if ($count !== null) {
 				$this->_data = str_replace($search, $replace, $this->_data, $count);
 
@@ -306,7 +307,7 @@
 		 * @param mixed $caseInsensitive Optional toggle of case sensitivity for searching.
 		 * @return boolean
 		 */
-		public function replaceContained($start, $end, $replace, $caseInsensitive = false) {
+		public function replaceContained($start, $end, $replace, $caseInsensitive = false) : bool {
 			$offset = 0;
 			$endLen = strlen($end);
 			$startLen = strlen($start);
@@ -362,7 +363,7 @@
 		 * @param mixed $caseInsensitive
 		 * @return boolean
 		 */
-		public function replaceOnce($search, $replace, $position = 0, $caseInsensitive = false) {
+		public function replaceOnce($search, $replace, $position = 0, $caseInsensitive = false) : bool {
 			$searchLen = strlen($search);
 			$replaceLen = strlen($replace);
 			$findFunction = ($caseInsensitive === false) ? self::CMP_STRPOS : self::CMP_STRIPOS;
@@ -396,7 +397,7 @@
 		 * @param boolean $caseInsensitive Optional toggle for case sensitivity of comparison.
 		 * @return boolean
 		 */
-		public function startsWith($string, $caseInsensitive = false) {
+		public function startsWith($string, bool $caseInsensitive = false) : bool {
 			$findFunction = ($caseInsensitive === false) ? self::CMP_STRPOS : self::CMP_STRIPOS;
 
 			return call_user_func($findFunction, $this->_data, $string) === 0;
@@ -409,7 +410,7 @@
 		 * @param null|integer $length Optional integer value to limit returned substring length.
 		 * @return string
 		 */
-		public function subString($start, $length = null) {
+		public function subString(int $start, ?int $length = null) : string {
 			if ($length !== null) {
 				return substr($this->_data, $start, $length);
 			}
@@ -422,7 +423,7 @@
 		 *
 		 * @return void
 		 */
-		public function toLower() {
+		public function toLower() : void {
 			$this->_data = strtolower($this->_data);
 
 			return;
@@ -433,7 +434,7 @@
 		 *
 		 * @return void
 		 */
-		public function toUpper() {
+		public function toUpper() : void {
 			$this->_data = strtoupper($this->_data);
 
 			return;
@@ -443,9 +444,9 @@
 		 * Overrides default toString() behavior to instead
 		 * output the internal data store.
 		 *
-		 * @return null|string
+		 * @return string
 		 */
-		public function __toString() {
+		public function __toString() : string {
 			return $this->_data ?? '';
 		}
 
@@ -457,7 +458,7 @@
 		 * @throws \InvalidArgumentException
 		 * @return StringHelper
 		 */
-		public static function join() {
+		public static function join() : StringHelper {
 			$argc = func_num_args();
 			$argv = func_get_args();
 

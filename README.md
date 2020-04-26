@@ -1,8 +1,11 @@
 # stoic-php-io
-PHP version of Stoic Framework's Input/Output utilities.
+I/O component of the PHP Stoic Framework.  For more information, visit our website at [stoic-framework.com](https://stoic-framework.com)
 
-## Installation
-In order to install, simply make use of composer (eventually).
+# Installation
+Typical composer installation is supported, simply run the following command:
 
-## Documentation
-Documentation is available in the [Docs](Docs/index.md) directory.
+```
+composer require stoic/io
+```
+
+Alternatively, downloads are available via the releases page here on GitHub.

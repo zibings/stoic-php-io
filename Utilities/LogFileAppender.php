@@ -12,7 +12,7 @@
 	 * class.
 	 *
 	 * @package Stoic\IO
-	 * @version 1.0.0
+	 * @version 1.0.1
 	 */
 	class LogFileOutputTypes extends EnumBase {
 		const PLAIN = 1;
@@ -24,7 +24,7 @@
 	 * plain text or JSON format.
 	 *
 	 * @package Stoic\IO
-	 * @version 1.0.0
+	 * @version 1.0.1
 	 */
 	class LogFileAppender extends AppenderBase {
 		/**
@@ -56,7 +56,7 @@
 		 * @param integer $outputType Optional integer value representing the output type.
 		 * @throws \InvalidArgumentException Thrown when an invalid output type is supplied.
 		 */
-		public function __construct(FileHelper $fh, $outputFile, $outputType = LogFileOutputTypes::PLAIN) {
+		public function __construct(FileHelper $fh, string $outputFile, int $outputType = LogFileOutputTypes::PLAIN) {
 			if (!LogFileOutputTypes::validValue($outputType)) {
 				throw new \InvalidArgumentException("Invalid output type supplied");
 			}
@@ -83,7 +83,7 @@
 		 * @param DispatchBase $dispatch Dispatch object to process.
 		 * @return void
 		 */
-		public function process($sender, DispatchBase &$dispatch) {
+		public function process($sender, DispatchBase &$dispatch) : void {
 			if (!($dispatch instanceof MessageDispatch)) {
 				return;
 			}

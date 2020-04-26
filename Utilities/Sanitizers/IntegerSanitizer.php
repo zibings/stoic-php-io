@@ -6,20 +6,17 @@
 	 * Class IntegerSanitizer
 	 *
 	 * @package Stoic\IO
-	 * @version 1.0.0
+	 * @version 1.0.1
 	 */
 	class IntegerSanitizer implements SanitizerInterface {
-
 		/**
 		 * Convert the supplied variable into an integer value.
 		 *
 		 * @param mixed $input The input that will be sanitized to an integer value.
-		 *
 		 * @throws \Exception
-		 *
 		 * @return integer
 		 */
-		public function sanitize($input) {
+		public function sanitize($input) : int {
 			try {
 				if (is_object($input)) {
 					$props = get_object_vars($input);

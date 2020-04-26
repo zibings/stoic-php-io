@@ -9,7 +9,7 @@
 	 * FileHelper::globFolder().
 	 *
 	 * @package Stoic\IO
-	 * @version 1.0.0
+	 * @version 1.0.1
 	 */
 	class FileHelperGlobs extends EnumBase {
 		const GLOB_ALL = 0;
@@ -21,7 +21,7 @@
 	 * Class for common filesystem operations.
 	 *
 	 * @package Stoic\IO
-	 * @version 1.0.0
+	 * @version 1.0.1
 	 */
 	class FileHelper {
 		/**
@@ -29,7 +29,7 @@
 		 *
 		 * @var string[]
 		 */
-		private static $included = array();
+		private static $included = [];
 		/**
 		 * String that will replace '~' in paths.
 		 *
@@ -45,7 +45,7 @@
 		 * @param string[] $preIncludes Array of files that have already been included in runtime.
 		 * @throws \InvalidArgumentException Thrown if core path provided is invalid/non-existent.
 		 */
-		public function __construct($relativePath, array $preIncludes = null) {
+		public function __construct(string $relativePath, array $preIncludes = null) {
 			if ($relativePath === null || !is_dir($relativePath)) {
 				throw new \InvalidArgumentException("Invalid core path provided for FileHelper instance.");
 			}
@@ -71,7 +71,7 @@
 		 * @throws \RuntimeException Thrown if copy operation fails.
 		 * @return void
 		 */
-		public function copyFile($source, $destination) {
+		public function copyFile(string $source, string $destination) : void {
 			if (empty($source) || empty($destination)) {
 				throw new \InvalidArgumentException("Invalid source or destination path provided to FileHelper::copyFile() -> " . $source . ", " . $destination);
 			}
@@ -102,7 +102,7 @@
 		 * @throws \InvalidArgumentException Thrown if source or destination are invalid, source doesn't exist, destination does exist, or any copy operation fails.
 		 * @return void
 		 */
-		public function copyFolder($source, $destination) {
+		public function copyFolder(string $source, string $destination) : void {
 			if (empty($source) || empty($destination)) {
 				throw new \InvalidArgumentException("Invalid source or destination path provided to FileHelper::copyFolder() -> " . $source . ", " . $destination);
 			}
@@ -122,7 +122,7 @@
 		 * @param string $path String value of potential file path.
 		 * @return boolean
 		 */
-		public function fileExists($path) {
+		public function fileExists(string $path) : bool {
 			if ($path !== null && !empty($path) && is_file($this->processRoot($path))) {
 				return true;
 			}
@@ -136,7 +136,7 @@
 		 * @param string $path String value of potential folder path.
 		 * @return boolean
 		 */
-		public function folderExists($path) {
+		public function folderExists(string $path) : bool {
 			if ($path !== null && !empty($path) && is_dir($this->processRoot($path))) {
 				return true;
 			}
@@ -151,7 +151,7 @@
 		 * @throws \InvalidArgumentException Thrown if file does not exist or path is invalid.
 		 * @return string
 		 */
-		public function getContents($path) {
+		public function getContents(string $path) : string {
 			if (!$this->fileExists($path)) {
 				throw new \InvalidArgumentException("Non-existent file provided to FileHelper::getContents() -> " . $path);
 			}
@@ -162,10 +162,10 @@
 		/**
 		 * Retrieves all file names in a folder non-recursively.
 		 *
-		 * @param string $path  String value of folder path.
-		 * @return \array|null
+		 * @param string $path String value of folder path.
+		 * @return null|array
 		 */
-		public function getFolderFiles($path) {
+		public function getFolderFiles(string $path) {
 			return $this->globFolder($path, FileHelperGlobs::GLOB_FILES);
 		}
 
@@ -173,9 +173,9 @@
 		 * Retrieves all folder names in a folder non-recursively.
 		 *
 		 * @param string $path String value of folder path.
-		 * @return \array|null
+		 * @return null|array
 		 */
-		public function getFolderFolders($path) {
+		public function getFolderFolders(string $path) {
 			return $this->globFolder($path, FileHelperGlobs::GLOB_FOLDERS);
 		}
 
@@ -185,9 +185,9 @@
 		 *
 		 * @param string $path String value of folder path.
 		 * @param boolean $recursive Boolean value to toggle recursive traversal, default is false.
-		 * @return \array|null
+		 * @return null|array
 		 */
-		public function getFolderItems($path, $recursive = false) {
+		public function getFolderItems(string $path, bool $recursive = false) {
 			return $this->globFolder($path, FileHelperGlobs::GLOB_ALL, $recursive);
 		}
 
@@ -197,7 +197,7 @@
 		 *
 		 * @return string
 		 */
-		public function getRelativePath() {
+		public function getRelativePath() : string {
 			return $this->relativePath;
 		}
 
@@ -209,9 +209,9 @@
 		 * @param string $path String value of folder path.
 		 * @param integer $globType Integer value of return type, can be 0 (all), 1 (folders only), and 2 (files only).
 		 * @param boolean $recursive Boolean value to toggle recursive traversal, default is false.
-		 * @return \array|null
+		 * @return null|array
 		 */
-		protected function globFolder($path, $globType, $recursive = false) {
+		protected function globFolder(string $path, int $globType, bool $recursive = false) {
 			if (empty($path)) {
 				return null;
 			}
@@ -270,7 +270,7 @@
 		 * @throws \RuntimeException Thrown if file has already been loaded and reloads are disallowed.
 		 * @return string
 		 */
-		public function load($path, $allowReload = false) {
+		public function load(string $path, bool $allowReload = false) : string {
 			if (empty($path)) {
 				throw new \InvalidArgumentException("Invalid file path provided for FileHelper::load()");
 			}
@@ -299,7 +299,7 @@
 		 * @throws \RuntimeException Thrown if a file has already been loaded and reloads are disallowed.
 		 * @return string[]
 		 */
-		public function loadGroup(array $paths, $allowReload = false) {
+		public function loadGroup(array $paths, bool $allowReload = false) {
 			if (count($paths) < 1) {
 				return array();
 			}
@@ -321,7 +321,7 @@
 		 * @param boolean $recursive Whether or not to create the path recursively, defaults to false.
 		 * @return boolean
 		 */
-		public function makeFolder($path, $mode = 0777, $recursive = false) {
+		public function makeFolder(string $path, int $mode = 0777, bool $recursive = false) : bool {
 			if (empty($path) || $this->folderExists($path)) {
 				return false;
 			}
@@ -337,7 +337,7 @@
 		 * @param string[] $parts Additional path parts, final path part only manages leading slashes.
 		 * @return string
 		 */
-		public function pathJoin($start, string ...$parts) {
+		public function pathJoin(string $start, string ...$parts) : string {
 			$path = array();
 			$start = str_replace("\\", "/", $start);
 			$partsCount = count($parts) - 1;
@@ -386,7 +386,7 @@
 		 * @param string $path String value of path to process.
 		 * @return string
 		 */
-		protected function processRoot($path) {
+		protected function processRoot(string $path) : string {
 			if ($path !== null && $path[0] == '~') {
 				$path = $this->relativePath . substr($path, ($path[1] == '/' && $this->relativePath[strlen($this->relativePath) - 1] == '/') ? 2 : 1);
 			}
@@ -404,7 +404,7 @@
 		 * @throws \InvalidArgumentException Thrown if file path is invalid or data is null.
 		 * @return mixed
 		 */
-		public function putContents($path, $data, $flags = 0, $context = null) {
+		public function putContents(string $path, $data, int $flags = 0, $context = null) {
 			if (empty($path)) {
 				throw new \InvalidArgumentException("Invalid file provided to FileHelper::putContents() -> " . $path);
 			}
@@ -438,7 +438,7 @@
 		 * @throws \RuntimeException Thrown if an item copy operation fails.
 		 * @return void
 		 */
-		protected function recursiveCopy($source, $dest) {
+		protected function recursiveCopy(string $source, string $dest) : void {
 			if (substr($source, -1) != '/') {
 				$source .= '/';
 			}
@@ -488,7 +488,7 @@
 		 * @param string $path Path to the file.
 		 * @return boolean
 		 */
-		public function removeFile($path) {
+		public function removeFile(string $path) : bool {
 			if (empty($path)) {
 				return false;
 			}
@@ -502,7 +502,7 @@
 		 * @param string $path Path to the directory.
 		 * @return boolean
 		 */
-		public function removeFolder($path) {
+		public function removeFolder(string $path) : bool {
 			if (empty($path)) {
 				return false;
 			}
@@ -518,7 +518,7 @@
 		 * @param null|integer $atime If present, the access time of the given filename is set to the value of atime. Otherwise, it is set to the value passed to the time parameter. If neither are present, the current system time is used. 
 		 * @return boolean
 		 */
-		public function touchFile($path, $time = null, $atime = null) {
+		public function touchFile(string $path, ?int $time = null, ?int $atime = null) : bool {
 			if (empty($path)) {
 				return false;
 			}

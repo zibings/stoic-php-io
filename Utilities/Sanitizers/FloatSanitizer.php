@@ -6,20 +6,17 @@
 	 * Class FloatSanitizer
 	 *
 	 * @package Stoic\IO
-	 * @version 1.0.0
+	 * @version 1.0.1
 	 */
 	class FloatSanitizer implements SanitizerInterface {
-
 		/**
 		 * Convert the supplied variable into a float value.
 		 *
 		 * @param mixed $input The input that will be sanitized to a float value.
-		 *
 		 * @throws \Exception
-		 *
 		 * @return float
 		 */
-		public function sanitize($input) {
+		public function sanitize($input) : float {
 			try {
 				if (is_object($input)) {
 					$props = get_object_vars($input);
