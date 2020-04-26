@@ -57,7 +57,7 @@
 		 * @param string $sanitizer The name of the sanitizer that will be used to cleanse the value.
 		 * @return mixed
 		 */
-		public function get(string $key, $default = null, string $sanitizer = null) {
+		public function get(?string $key, $default = null, string $sanitizer = null) {
 			if ($key === null) {
 				return $this->parameters;
 			}

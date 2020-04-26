@@ -16,7 +16,7 @@
 		 * @throws \Exception
 		 * @return boolean
 		 */
-		public function sanitize($input) : bool {
+		public function sanitize($input) {
 			try {
 				if (($value = json_decode($input)) === null) {
 					// @codeCoverageIgnoreStart

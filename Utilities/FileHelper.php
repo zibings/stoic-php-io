@@ -46,7 +46,7 @@
 		 * @throws \InvalidArgumentException Thrown if core path provided is invalid/non-existent.
 		 */
 		public function __construct(string $relativePath, array $preIncludes = null) {
-			if ($relativePath === null || !is_dir($relativePath)) {
+			if (!is_dir($relativePath)) {
 				throw new \InvalidArgumentException("Invalid core path provided for FileHelper instance.");
 			}
 

@@ -56,10 +56,10 @@
 		 * Add a new sanitation type.
 		 *
 		 * @param string $key The key, which is a string value, that described the sanitizer being added.
-		 * @param string $sanitizer The instance of the sanitizer class, or a fully qualified domain name of the class.
+		 * @param string|object $sanitizer The instance of the sanitizer class, or a fully qualified domain name of the class.
 		 * @return SanitationHelper
 		 */
-		public function addSanitizer(string $key, string $sanitizer) : SanitationHelper {
+		public function addSanitizer(string $key, $sanitizer) : SanitationHelper {
 			if (is_object($sanitizer) && ($sanitizer instanceof SanitizerInterface)) {
 				$this->_sanitizers[$key]= $sanitizer;
 

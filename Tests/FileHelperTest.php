@@ -31,12 +31,6 @@
 		const FOLDER_ONE = 'randomFolderWithLongName';
 		const FOLDER_TWO = 'anotherRandomFolderWithLongName';
 
-		public function test_NullCorePathThrowsException() {
-			self::expectException(\Exception::class);
-			$io = new FileHelper(null);
-
-			return;
-		}
 
 		public function test_FakeCorePathThrowsException() {
 			self::expectException(\Exception::class);
