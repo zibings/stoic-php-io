@@ -166,6 +166,26 @@
 		}
 
 		/**
+		 * Checks if all provided keys exist within the parameter list.
+		 *
+		 * @param string[] $keys Collection of keys to find in parameter list.
+		 * @return boolean
+		 */
+		public function hasAll(string ...$keys) : bool {
+			$ret = true;
+
+			foreach (array_values($keys) as $key) {
+				if (array_key_exists($key, $this->parameters) === false) {
+					$ret = false;
+
+					break;
+				}
+			}
+
+			return $ret;
+		}
+
+		/**
 		 * Return a clone of this ParameterHelper object with an added
 		 * parameter.  If parameter is already present, value will be
 		 * overwritten in clone.

@@ -1,7 +1,7 @@
 {
 	"name": "stoic/io",
 	"description": "Input and Output components for the Stoic framework",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"homepage": "https://stoic-framework.com",
 	"autoload": {
 		"psr-0": {
