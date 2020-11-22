@@ -276,7 +276,7 @@
 			}
 
 			if (isset(FileHelper::$included[$path]) && !$allowReload) {
-				throw new \RuntimeException("File has already been loaded -> " . $path);
+				return $path;
 			}
 
 			if (!$this->fileExists($path)) {
