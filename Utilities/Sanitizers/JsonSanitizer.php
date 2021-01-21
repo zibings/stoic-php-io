@@ -18,7 +18,7 @@
 		 */
 		public function sanitize($input) {
 			try {
-				if (($value = json_decode($input)) === null) {
+				if (($value = json_decode($input, true)) === null) {
 					// @codeCoverageIgnoreStart
 					if (($error = json_last_error_msg()) === null) {
 						$error = "Unable to decode the json.";

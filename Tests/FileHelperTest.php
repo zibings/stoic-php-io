@@ -172,15 +172,12 @@
 			$io->touchFile($folder . '/someFile.txt');
 			$io->makeFolder($folder . '/someFolder');
 
-			self::assertArraySubset(array('./' . self::FOLDER_ONE . '/someFile.txt'), $io->getFolderFiles($folder));
-			self::assertArraySubset(array('./' . self::FOLDER_ONE . '/someFolder/'), $io->getFolderFolders($folder));
-			self::assertArraySubset(array(
-			  './' . self::FOLDER_ONE . '/someFile.txt',
-			  './' . self::FOLDER_ONE . '/someFolder/'
-			), $io->getFolderItems($folder));
+			self::assertEquals('./' . self::FOLDER_ONE . '/someFile.txt', $io->getFolderFiles($folder)[0]);
+			self::assertEquals('./' . self::FOLDER_ONE . '/someFolder/', $io->getFolderFolders($folder)[0]);
+			self::assertEquals(2, count($io->getFolderItems($folder)));
 
 			$io->copyFolder('~/' . self::FOLDER_ONE, '~/' . self::FOLDER_TWO);
-			self::assertArraySubset(array(
+			self::assertEquals(array(
 			  './' . self::FOLDER_TWO . '/someFile.txt',
 			  './' . self::FOLDER_TWO . '/someFolder/'
 			), $io->getFolderItems('~/' . self::FOLDER_TWO));
@@ -244,19 +241,8 @@
 			$io->loadGroup(array('~/ioTests/test2.php', '~/ioTests/test3.php'), true);
 			self::assertEquals(6, anotherCounterFunction(true));
 
-			try {
-				$io->load('~/ioTests/test1.php');
-				self::assertFalse(true);
-			} catch (\RuntimeException $ex) {
-				self::assertEquals("File has already been loaded -> ~/ioTests/test1.php", $ex->getMessage());
-			}
-
-			try {
-				$io->loadGroup(array('~/ioTests/test2.php', '~/ioTests/test3.php'));
-				self::assertTrue(false);
-			} catch (\RuntimeException $ex) {
-				self::assertEquals("File has already been loaded -> ~/ioTests/test2.php", $ex->getMessage());
-			}
+			self::assertEquals("~/ioTests/test1.php", $io->load("~/ioTests/test1.php"));
+			self::assertEquals(2, count($io->loadGroup(['~/ioTests/test2.php', '~/ioTests/test3.php'])));
 
 			try {
 				$io->load('');

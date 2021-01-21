@@ -275,7 +275,7 @@
 				throw new \InvalidArgumentException("Invalid file path provided for FileHelper::load()");
 			}
 
-			if (isset(FileHelper::$included[$path]) && !$allowReload) {
+			if (array_key_exists($path, FileHelper::$included) && !$allowReload) {
 				return $path;
 			}
 
@@ -301,10 +301,10 @@
 		 */
 		public function loadGroup(array $paths, bool $allowReload = false) {
 			if (count($paths) < 1) {
-				return array();
+				return [];
 			}
 
-			$ret = array();
+			$ret = [];
 
 			foreach (array_values($paths) as $path) {
 				$ret[] = $this->load($path, $allowReload);
