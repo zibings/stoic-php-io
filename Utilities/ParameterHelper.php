@@ -21,6 +21,12 @@
 		 * @var SanitationHelper
 		 */
 		protected $sanitizer = null;
+		/**
+		 * Source data fed to instance.
+		 *
+		 * @var array
+		 */
+		private $source = [];
 
 
 		/**
@@ -36,6 +42,7 @@
 
 			$this->parameters = $params;
 			$this->sanitizer  = $sanitizer;
+			$this->source     = $params;
 
 			return;
 		}
@@ -138,6 +145,15 @@
 			}
 
 			return $json;
+		}
+
+		/**
+		 * Returns the source array the instance encapsulates.
+		 *
+		 * @return array
+		 */
+		public function getSource() : array {
+			return $this->source;
 		}
 
 		/**
