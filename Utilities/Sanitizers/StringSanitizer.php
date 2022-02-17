@@ -6,7 +6,7 @@
 	 * Class StringSanitizer
 	 *
 	 * @package Stoic\IO
-	 * @version 1.0.1
+	 * @version 1.1.0
 	 */
 	class StringSanitizer implements SanitizerInterface {
 		/**
@@ -16,20 +16,16 @@
 		 * @throws \Exception
 		 * @return string
 		 */
-		public function sanitize($input) : string {
+		public function sanitize(mixed $input) : string {
 			$value = '';
 
-			if (is_object($input)) {
-				if (method_exists($input, '__toString')) {
-					$value = $input->__toString();
-				}
+			if (is_object($input) && method_exists($input, '__toString')) {
+				$value = $input->__toString();
 			} else if (is_array($input)) {
 				$value = serialize($input);
-
 			} else if (is_bool($input)) {
 				if ($input === true) {
 					$value = 'true';
-
 				} else {
 					$value = 'false';
 				}

@@ -10,7 +10,7 @@
 	 * Appender that outputs messages to stdout.
 	 *
 	 * @package Stoic\IO
-	 * @version 1.0.1
+	 * @version 1.1.0
 	 */
 	class LogConsoleAppender extends AppenderBase {
 		/**
@@ -18,7 +18,7 @@
 		 *
 		 * @var ConsoleHelper
 		 */
-		protected $ch = null;
+		protected ConsoleHelper $ch;
 
 
 		/**
@@ -42,7 +42,7 @@
 		 * @param DispatchBase $dispatch Dispatch object to process.
 		 * @return void
 		 */
-		public function process($sender, DispatchBase &$dispatch) : void {
+		public function process(mixed $sender, DispatchBase &$dispatch) : void {
 			if (!($dispatch instanceof MessageDispatch)) {
 				return;
 			}
@@ -50,7 +50,7 @@
 			if (count($dispatch->messages) > 0) {
 				$output = [];
 
-				foreach (array_values($dispatch->messages) as $message) {
+				foreach ($dispatch->messages as $message) {
 					$output[] = $message->__toString();
 				}
 

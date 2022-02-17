@@ -12,7 +12,7 @@
 	 * Class SanitationHelper
 	 *
 	 * @package Stoic\IO
-	 * @version 1.0.1
+	 * @version 1.1.0
 	 */
 	class SanitationHelper {
 		const BOOLEAN = 'bool';
@@ -20,32 +20,33 @@
 		const FLOAT   = 'float';
 		const STRING  = 'string';
 
-		/**
-		 * List of all the default sanitizer classes.
-		 *
-		 * @var string[]
-		 */
-		protected $_defaults = [
-			self::BOOLEAN => BooleanSanitizer::class,
-			self::INTEGER => IntegerSanitizer::class,
-			self::FLOAT   => FloatSanitizer::class,
-			self::STRING  => StringSanitizer::class,
-		];
 
 		/**
 		 * List of all the instantiated sanitizers.
 		 *
 		 * @var SanitizerInterface[]
 		 */
-		protected $_sanitizers = [];
+		protected array $_sanitizers = [];
+
 
 		/**
-		 * SanitationHelper constructor.
+		 * List of all the default sanitizer classes.
 		 *
-		 * Adds all the default sanitizers.
+		 * @var string[]
+		 */
+		protected static array $_defaults = [
+			self::BOOLEAN => BooleanSanitizer::class,
+			self::INTEGER => IntegerSanitizer::class,
+			self::FLOAT   => FloatSanitizer::class,
+			self::STRING  => StringSanitizer::class,
+		];
+
+
+		/**
+		 * Instantiates a new SanitationHelper object, adding all default sanitizers.
 		 */
 		public function __construct() {
-			foreach ($this->_defaults as $name => $class) {
+			foreach (static::$_defaults as $name => $class) {
 				$this->addSanitizer($name, $class);
 			}
 
@@ -59,10 +60,9 @@
 		 * @param string|object $sanitizer The instance of the sanitizer class, or a fully qualified domain name of the class.
 		 * @return SanitationHelper
 		 */
-		public function addSanitizer(string $key, $sanitizer) : SanitationHelper {
-			if (is_object($sanitizer) && ($sanitizer instanceof SanitizerInterface)) {
+		public function addSanitizer(string $key, string|object $sanitizer) : SanitationHelper {
+			if ($sanitizer instanceof SanitizerInterface) {
 				$this->_sanitizers[$key]= $sanitizer;
-
 			} else if (is_string($sanitizer) && class_exists($sanitizer) && class_implements($sanitizer, SanitizerInterface::class)) {
 				$this->_sanitizers[$key] = new $sanitizer();
 			}
@@ -74,7 +74,7 @@
 		 * Check whether a sanitation type exists.
 		 *
 		 * @param string $key The key, which is a string value, of the sanitizer that is being searched for.
-		 * @return boolean
+		 * @return bool
 		 */
 		public function hasSanitizer(string $key) : bool {
 			return isset($this->_sanitizers[$key]);
@@ -87,7 +87,7 @@
 		 * @param string $key The key, which is a string value, for the sanitizer that will be used.
 		 * @return mixed
 		 */
-		public function sanitize($input, string $key) {
+		public function sanitize(mixed $input, string $key) : mixed {
 			if (!$this->hasSanitizer($key)) {
 				return $input;
 			}

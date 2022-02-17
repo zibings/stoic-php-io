@@ -6,7 +6,7 @@
 	 * Interface SanitizerInterface
 	 *
 	 * @package Stoic\IO
-	 * @version 1.0.1
+	 * @version 1.1.0
 	 */
 	interface SanitizerInterface {
 		/**
@@ -15,5 +15,5 @@
 		 * @param mixed $input The variable that will be converted.
 		 * @return mixed
 		 */
-		public function sanitize($input);
+		public function sanitize(mixed $input) : mixed;
 	}

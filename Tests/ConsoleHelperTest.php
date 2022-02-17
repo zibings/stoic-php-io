@@ -41,8 +41,8 @@
 			self::assertFalse($ch->hasShortLongArg('c', 'control', true));
 			self::assertTrue($ch->isCLI());
 			self::assertTrue($ch->isNaturalCLI());
-			self::assertEquals(6, count($ch->parameters(true)));
-			self::assertEquals(6, count($ch->parameters(true, true)));
+			self::assertCount(6, $ch->parameters(true));
+			self::assertCount(6, $ch->parameters(true, true));
 
 			$ch = new ConsoleHelper();
 			self::assertEquals(0, $ch->numArgs());
@@ -63,6 +63,15 @@
 			$ch->putLine();
 			self::assertEquals("\n", ob_get_contents());
 			ob_end_clean();
+
+			return;
+		}
+
+		public function test_IsWindows() {
+			$ch    = new ConsoleHelper();
+			$isWin = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
+
+			$this->assertEquals($isWin, $ch->isWindows());
 
 			return;
 		}

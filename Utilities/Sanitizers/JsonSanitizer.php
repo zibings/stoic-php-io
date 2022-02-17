@@ -6,7 +6,7 @@
 	 * Class BooleanSanitizer
 	 *
 	 * @package Stoic\IO
-	 * @version 1.0.1
+	 * @version 1.1.0
 	 */
 	class JsonSanitizer implements SanitizerInterface {
 		/**
@@ -14,24 +14,18 @@
 		 *
 		 * @param mixed $input The input that will be sanitized to a boolean value.
 		 * @throws \Exception
-		 * @return boolean
+		 * @return mixed
 		 */
-		public function sanitize($input) {
-			try {
-				if (($value = json_decode($input, true)) === null) {
-					// @codeCoverageIgnoreStart
-					if (($error = json_last_error_msg()) === null) {
-						$error = "Unable to decode the json.";
-					}
-					// @codeCoverageIgnoreEnd
-
-					throw new \Exception($error);
+		public function sanitize(mixed $input) : mixed {
+			if (($value = json_decode($input, true)) === null) {
+				// @codeCoverageIgnoreStart
+				if (($error = json_last_error_msg()) === null) {
+					$error = "Unable to decode the json.";
 				}
-			// @codeCoverageIgnoreStart
-			} catch (\Exception $ex) {
-				throw $ex;
+				// @codeCoverageIgnoreEnd
+
+				throw new \Exception($error);
 			}
-			// @codeCoverageIgnoreEnd
 
 			return $value;
 		}
