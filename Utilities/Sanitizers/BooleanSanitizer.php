@@ -14,29 +14,20 @@
 		 *
 		 * @param mixed $input The input that will be sanitized to a boolean value.
 		 * @throws \Exception
-		 * @return boolean
+		 * @return bool
 		 */
-		public function sanitize($input) : bool {
+		public function sanitize(mixed $input) : bool {
 			$value = false;
 
-			try {
-				if (is_string($input)) {
-					$input = strtolower($input);
+			if (is_string($input)) {
+				$input = strtolower($input);
 
-					if ($input == 'false') {
-						$value = false;
-
-					} else if ($input == 'true') {
-						$value = true;
-					}
-				} else {
-					$value = boolval($input);
+				if ($input == 'true') {
+					$value = true;
 				}
-			// @codeCoverageIgnoreStart
-			} catch (\Exception $ex) {
-				throw $ex;
+			} else {
+				$value = boolval($input);
 			}
-			// @codeCoverageIgnoreEnd
 
 			return $value;
 		}

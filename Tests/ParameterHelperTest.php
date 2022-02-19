@@ -20,10 +20,22 @@
 			'height' => 175.26
 		);
 
+		public function test_Source() {
+			$ph     = new ParameterHelper(['test1' => 'test1']);
+			$source = $ph->getSource();
+
+			$this->assertCount(1, $source);
+			$this->assertEquals('test1', $source['test1']);
+
+			return;
+		}
+
 		public function test_numValues() {
 			$ph = new ParameterHelper($this->_params);
 
 			$this->assertEquals(4, $ph->count());
+
+			return;
 		}
 
 		public function test_hasValue() {
@@ -31,6 +43,10 @@
 
 			$this->assertTrue($ph->has('string'));
 			$this->assertFalse($ph->has('non-existent'));
+			$this->assertTrue($ph->hasAll('string', 'integer', 'float', 'bool'));
+			$this->assertFalse($ph->hasAll('test'));
+
+			return;
 		}
 
 		public function test_getDefaultValues() {

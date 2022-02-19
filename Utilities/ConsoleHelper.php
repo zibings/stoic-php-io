@@ -2,13 +2,11 @@
 
 	namespace Stoic\Utilities;
 
-	use Stoic\Utilities\ReturnHelper;
-
 	/**
 	 * ConsoleHelper class to aid with CLI interactions.
 	 *
 	 * @package Stoic\IO
-	 * @version 1.0.1
+	 * @version 1.1.0
 	 */
 	class ConsoleHelper {
 		const ARGINFO_ARGA = 'arga';
@@ -22,36 +20,32 @@
 		 *
 		 * @var array
 		 */
-		private $argInfo = [];
+		private array $argInfo;
 		/**
-		 * Whether or not executing environment
-		 * is Windows based.
+		 * Whether executing environment is Windows based.
 		 *
 		 * @var bool
 		 */
-		private $isWindows = false;
+		private bool $isWindows = false;
 		/**
-		 * Allows overriding instances to think
-		 * they were called from CLI PHP.
+		 * Allows overriding instances to think they were called from CLI PHP.
 		 *
 		 * @var bool
 		 */
-		private $forceCli = false;
+		private bool $forceCli = false;
 		/**
-		 * Attempts to represent the name of the
-		 * executed script based on the argv values.
+		 * Attempts to represent the name of the executed script based on the argv values.
 		 *
 		 * @var mixed
 		 */
-		private $self = null;
+		private mixed $self = null;
 
 
 		/**
 		 * Creates a new ConsoleHelper instance.
 		 *
-		 * @param array $argv Argument collection.
-		 * @param boolean $forceCli Force instance to emulate CLI mode.
-		 * @return void
+		 * @param null|array $argv Argument collection.
+		 * @param bool $forceCli Force instance to emulate CLI mode.
 		 */
 		public function __construct(array $argv = null, bool $forceCli = false) {
 			$this->argInfo = array(
@@ -85,15 +79,13 @@
 		}
 
 		/**
-		 * Compares an argument by key optionally
-		 * without case sensitivity. May return
-		 * inaccurate results against toggle type
-		 * arguments.
+		 * Compares an argument by key optionally without case sensitivity. May return inaccurate results against toggle
+		 * type arguments.
 		 *
 		 * @param string $key String value of key in argument list.
 		 * @param string $value Value to compare against.
-		 * @param boolean $caseInsensitive Enable case-insensitive comparison.
-		 * @return boolean
+		 * @param bool $caseInsensitive Enable case-insensitive comparison.
+		 * @return bool
 		 */
 		public function compareArg(string $key, string $value, bool $caseInsensitive = false) : bool {
 			$key = ($caseInsensitive) ? strtolower($key) : $key;
@@ -110,14 +102,13 @@
 		}
 
 		/**
-		 * Compares an argument at the given index
-		 * optionally without case sensitivity.
-		 * Returns false if index is out of bounds.
+		 * Compares an argument at the given index optionally without case sensitivity. Returns false if index is out of
+		 * bounds.
 		 *
 		 * @param int $index Integer value for argument offset.
 		 * @param string $value String value to compare against.
-		 * @param boolean $caseInsensitive Enable case-insensitive comparison.
-		 * @return boolean
+		 * @param bool $caseInsensitive Enable case-insensitive comparison.
+		 * @return bool
 		 */
 		public function compareArgAt(int $index, string $value, bool $caseInsensitive = false) : bool {
 			if ($this->argInfo[self::ARGINFO_ARGC] <= $index) {
@@ -132,7 +123,7 @@
 		 *
 		 * @codeCoverageIgnore
 		 * @param int $characters Number of characters to read from STDIN.
-		 * @return string|null
+		 * @return null|string
 		 */
 		public function get(int $characters = 1) : ?string {
 			if ($characters < 1) {
@@ -153,17 +144,16 @@
 		}
 
 		/**
-		 * Attempts to retrieve an argument by both short and long
-		 * versions, otherwise returns a default value that is
+		 * Attempts to retrieve an argument by both short and long versions, otherwise returns a default value that is
 		 * optionally provided.
 		 *
 		 * @param string $short String value that represents the short name of the parameter.
 		 * @param string $long String value that represents the long name of the parameter.
 		 * @param mixed $default Default value if parameter not present, set to null if not provided.
-		 * @param boolean $caseInsensitive Optional toggle to make comparisons case-insensitive (sensitive by default).
+		 * @param bool $caseInsensitive Optional toggle to make comparisons case-insensitive (sensitive by default).
 		 * @return mixed
 		 */
-		public function getParameterWithDefault(string $short, string $long, $default = null, bool $caseInsensitive = false) {
+		public function getParameterWithDefault(string $short, string $long, mixed $default = null, bool $caseInsensitive = false) : mixed {
 			$collection = ($caseInsensitive) ? self::ARGINFO_ARGA : self::ARGINFO_ARGACS;
 			$short = ($caseInsensitive) ? strtolower($short) : $short;
 			$long = ($caseInsensitive) ? strtolower($long) : $long;
@@ -179,15 +169,15 @@
 		 * Queries a user repeatedly for input.
 		 *
 		 * @codeCoverageIgnore
-		 * @param string $uery Base prompt, sans-colon.
+		 * @param string $query Base prompt, sans-colon.
 		 * @param mixed $defaultValue Default value for input, provide null if not present.
 		 * @param string $errorMessage Message to display when input not provided correctly.
 		 * @param int $maxTries Maximum number of attempts a user can make before the process bails out.
-		 * @param callable $validation An optional method or function to provide boolean validation of input.
-		 * @param callable $sanitation An optional method or function to provide sanitation of the validated input.
+		 * @param null|callable $validation An optional method or function to provide boolean validation of input.
+		 * @param null|callable $sanitation An optional method or function to provide sanitation of the validated input.
 		 * @return \Stoic\Utilities\ReturnHelper
 		 */
-		public function getQueriedInput(string $query, $defaultValue, string $errorMessage, int $maxTries = 5, ?callable $validation = null, ?callable $sanitation = null) : ReturnHelper {
+		public function getQueriedInput(string $query, mixed $defaultValue, string $errorMessage, int $maxTries = 5, ?callable $validation = null, ?callable $sanitation = null) : ReturnHelper {
 			$Ret = new ReturnHelper();
 			$Prompt = $query;
 
@@ -252,22 +242,20 @@
 		}
 
 		/**
-		 * Returns the script being called according to the passed
-		 * arguments (first argument in $argv).
+		 * Returns the script being called according to the passed arguments (first argument in $argv).
 		 *
 		 * @return mixed
 		 */
-		public function getSelf() {
+		public function getSelf() : mixed {
 			return $this->self;
 		}
 
 		/**
-		 * Checks if the given key exists in the argument list,
-		 * optionally without case sensitivity.
+		 * Checks if the given key exists in the argument list, optionally without case sensitivity.
 		 *
 		 * @param string $key Key name to check in argument list.
-		 * @param boolean $caseInsensitive Enable case-insensitive comparison.
-		 * @return boolean
+		 * @param bool $caseInsensitive Enable case-insensitive comparison.
+		 * @return bool
 		 */
 		public function hasArg(string $key, bool $caseInsensitive = false) : bool {
 			if ($this->argInfo[self::ARGINFO_ARGC] < 1) {
@@ -281,14 +269,13 @@
 		}
 
 		/**
-		 * Checks if the given key exists in the argument list,
-		 * using both a short and long version of the key,
-		 * optionally without case sensitivity.
+		 * Checks if the given key exists in the argument list, using both a short and long version of the key, optionally
+		 * without case sensitivity.
 		 *
 		 * @param string $short Short version of key name to check in argument list.
 		 * @param string $long Long version of key name to check in argument list.
-		 * @param boolean $caseInsensitive Enable case-insensitive comparison.
-		 * @return boolean
+		 * @param bool $caseInsensitive Enable case-insensitive comparison.
+		 * @return bool
 		 */
 		public function hasShortLongArg(string $short, string $long, bool $caseInsensitive = false) : bool {
 			if ($this->argInfo[self::ARGINFO_ARGC] < 1) {
@@ -303,64 +290,67 @@
 		}
 
 		/**
-		 * Returns whether or not PHP invocation is via CLI
-		 * or invocation is emulating CLI.
+		 * Returns whether invocation is via CLI or invocation is emulating CLI.
 		 *
-		 * @return boolean
+		 * @return bool
 		 */
 		public function isCLI() : bool {
 			return $this->forceCli || PHP_SAPI == 'cli';
 		}
 
 		/**
-		 * Returns whether or not PHP invocation is via CLI
-		 * and ignores forced CLI mode.
+		 * Returns whether PHP invocation is via CLI and ignores forced CLI mode.
 		 *
-		 * @return boolean
+		 * @return bool
 		 */
 		public function isNaturalCLI() : bool {
 			return PHP_SAPI == 'cli';
 		}
 
 		/**
+		 * Returns whether the executing OS identifies as Windows.
+		 *
+		 * @return bool
+		 */
+		public function isWindows() : bool {
+			return $this->isWindows;
+		}
+
+		/**
 		 * Returns the number of arguments.
 		 *
-		 * @return int Number of arguments supplied to the instance.
+		 * @return int
 		 */
 		public function numArgs() : int {
 			return $this->argInfo[self::ARGINFO_ARGC];
 		}
 
 		/**
-		 * Returns the argument collection, either
-		 * as-received by the instance or as an
-		 * associative array.
+		 * Returns the argument collection, either as-received by the instance or as an associative array.
 		 *
-		 * @param boolean $asAssociative Enables returning list as an associative array.
-		 * @param boolean $caseSensitive Enables the return of case insensitive associative arrays.
+		 * @param bool $asAssociative Enables returning list as an associative array.
+		 * @param bool $caseSensitive Enables the return of case-insensitive associative arrays.
 		 * @return array
 		 */
-		public function parameters(bool $asAssociative = false, bool $caseSensitive = false) {
+		public function parameters(bool $asAssociative = false, bool $caseSensitive = false) : array {
 			$assocIndex = ($caseSensitive) ? self::ARGINFO_ARGACS : self::ARGINFO_ARGA;
 
 			return ($asAssociative) ? $this->argInfo[$assocIndex] : $this->argInfo[self::ARGINFO_ARGV];
 		}
 
 		/**
-		 * Parses a collection of arguments into an organized
-		 * collection.
+		 * Parses a collection of arguments into an organized collection.
 		 *
-		 * Pairs of arguments are put together while toggle
-		 * elements (ie, -enable) are given a value of true.
-		 * Case sensitivity can be optionally disabled.
+		 * Pairs of arguments are put together while toggle elements (ie, -enable) are given a value of true. Case
+		 * sensitivity can be optionally disabled.
 		 *
 		 * @param array $args Array of arguments to parse.
-		 * @param boolean $caseInsensitive Optional argument to disable case sensitivity in resulting array.
+		 * @param bool $caseInsensitive Optional argument to disable case sensitivity in resulting array.
 		 * @return array
 		 */
-		protected function parseParams(array $args, bool $caseInsensitive = false) {
+		protected function parseParams(array $args, bool $caseInsensitive = false) : array {
 			$len = count($args);
-			$assoc = array();
+			$assoc = [];
 
 			for ($i = 0; $i < $len; ++$i) {
 				if ($args[$i][0] == '-' && strlen($args[$i]) > 1) {
@@ -400,10 +390,9 @@
 		}
 
 		/**
-		 * Outputs the buffer followed by a newline
-		 * to STDIN.
+		 * Outputs the buffer followed by a newline to STDIN.
 		 *
-		 * @param string $buf Buffer to output.
+		 * @param null|string $buf Buffer to output.
 		 * @return void
 		 */
 		public function putLine(?string $buf = null) : void {
