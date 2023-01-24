@@ -69,8 +69,8 @@
 		 * @param mixed $source Optional source string to initialize internal data store.
 		 */
 		public function __construct(mixed $source = null) {
-			$this->_data = $source;
-			$this->_length = strlen($this->_data);
+			$this->_data   = $source;
+			$this->_length = strlen($this->_data ?? '');
 
 			return;
 		}
@@ -178,8 +178,8 @@
 		 * @return bool
 		 */
 		public function endsWith(string|StringHelper $string, bool $caseInsensitive = false) : bool {
-			$length = strlen($string);
-			$endWord = substr($this->_data, -($length + 1));
+			$length      = strlen($string ?? '');
+			$endWord     = substr($this->_data ?? '', -($length + 1));
 			$cmpFunction = ($caseInsensitive === false) ? self::CMP_STRPOS : self::CMP_STRIPOS;
 
 			return call_user_func($cmpFunction, $endWord, $string) !== false;
