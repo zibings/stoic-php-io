@@ -1,7 +1,7 @@
 {
 	"name": "stoic/io",
 	"description": "Input and Output components for the Stoic framework",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"homepage": "https://stoic-framework.com",
 	"autoload": {
 		"psr-0": {
@@ -18,7 +18,7 @@
 	},
 	"require": {
 		"php": ">=8.2",
-		"stoic/stoic": "^1.1"
+		"stoic/stoic": "^1"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "^9"
