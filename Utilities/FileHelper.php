@@ -207,7 +207,7 @@
 				return null;
 			}
 
-			$ret = array();
+			$ret  = [];
 			$path = $this->processRoot($path);
 
 			if (!is_dir($path)) {
@@ -247,6 +247,8 @@
 			}
 
 			@closedir($dh);
+
+			sort($ret);
 
 			return $ret;
 		}
