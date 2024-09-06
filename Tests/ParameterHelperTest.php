@@ -45,6 +45,9 @@
 			$this->assertFalse($ph->has('non-existent'));
 			$this->assertTrue($ph->hasAll('string', 'integer', 'float', 'bool'));
 			$this->assertFalse($ph->hasAll('test'));
+			$this->assertTrue($ph->hasAny('string'));
+			$this->assertTrue($ph->hasAny('test', 'string'));
+			$this->assertFalse($ph->hasAny('test'));
 
 			return;
 		}
