@@ -197,8 +197,20 @@
 			return true;
 		}
 
+		/**
+		 * Checks if any of the provided keys exist within the parameter list.
+		 *
+		 * @param string ...$keys Collection of keys to find in parameter list.
+		 * @return bool
+		 */
 		public function hasAny(string ...$keys) : bool {
+			foreach ($keys as $key) {
+				if (array_key_exists($key, $this->parameters) === true) {
+					return true;
+				}
+			}
 
+			return false;
 		}
 
 		/**
