@@ -188,17 +188,17 @@
 		 * @return bool
 		 */
 		public function hasAll(string ...$keys) : bool {
-			$ret = true;
-
-			foreach (array_values($keys) as $key) {
+			foreach ($keys as $key) {
 				if (array_key_exists($key, $this->parameters) === false) {
-					$ret = false;
-
-					break;
+					return false;
 				}
 			}
 
-			return $ret;
+			return true;
+		}
+
+		public function hasAny(string ...$keys) : bool {
+
 		}
 
 		/**
