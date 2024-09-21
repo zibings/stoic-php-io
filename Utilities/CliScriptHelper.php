@@ -39,11 +39,13 @@
 		 *
 		 * @param string $name Name of the script, displayed at script start.
 		 * @param string $description Description of the script, displayed with help.
+		 * @param ConsoleHelper $ch ConsoleHelper object for internal use.
 		 * @return void
 		 */
 		public function __construct(
 			public string $name,
-			public string $description) {
+			public string $description,
+			protected ConsoleHelper $ch) {
 			return;
 		}
 
@@ -102,11 +104,10 @@
 		 * Checks a ConsoleHelper object's parameters against the required options for the script.  If the requirements are
 		 * not satisfied, this method will print an error and exit the runtime.
 		 *
-		 * @param ConsoleHelper $ch ConsoleHelper object to check for required options.
 		 * @return void
 		 */
-		public function checkRequirements(ConsoleHelper $ch) : void {
-			if (!$this->satisfiesRequirements($ch)) {
+		public function checkRequirements() : void {
+			if (!$this->satisfiesRequirements()) {
 				$requiredLength = 0;
 				$required       = [];
 
@@ -119,7 +120,7 @@
 					}
 				}
 
-				$this->showBasicHelp($ch, "Must include " . implode(', ', array_values($required)) . " argument(s)");
+				$this->showBasicHelp("Must include " . implode(', ', array_values($required)) . " argument(s)");
 
 				exit;
 			}
@@ -130,14 +131,13 @@
 		/**
 		 * Retrieves all options for the script in an array.
 		 *
-		 * @param ConsoleHelper $ch
 		 * @return string[]
 		 */
-		public function getOptions(ConsoleHelper $ch) : array {
+		public function getOptions() : array {
 			$ret = [];
 
 			foreach ($this->options as $opt) {
-				$value = $ch->getParameterWithDefault($opt->shortName, $opt->longName, $opt->defaultValue, true);
+				$value = $this->ch->getParameterWithDefault($opt->shortName, $opt->longName, $opt->defaultValue, true);
 
 				$ret[$opt->longName]  = $value;
 				$ret[$opt->shortName] = $value;
@@ -149,12 +149,11 @@
 		/**
 		 * Checks a ConsoleHelper object's parameters against the required options for the script.
 		 *
-		 * @param ConsoleHelper $ch ConsoleHelper object to check for required options.
 		 * @return bool
 		 */
-		public function satisfiesRequirements(ConsoleHelper $ch) : bool {
+		public function satisfiesRequirements() : bool {
 			foreach ($this->options as $opt) {
-				if ($opt->required && !$ch->hasShortLongArg($opt->shortName, $opt->longName, true)) {
+				if ($opt->required && !$this->ch->hasShortLongArg($opt->shortName, $opt->longName, true)) {
 					return false;
 				}
 			}
@@ -166,17 +165,16 @@
 		 * Generates a basic instruction on how to get help for the script, optionally displaying the given message before
 		 * the instruction.
 		 *
-		 * @param ConsoleHelper $ch ConsoleHelper object for use with output.
 		 * @param string|null $message Optional message to send before the generated help instruction.
 		 * @return static
 		 */
-		public function showBasicHelp(ConsoleHelper $ch, string|null $message = null) : static {
+		public function showBasicHelp(string|null $message = null) : static {
 			if ($message !== null) {
-				$ch->putLine($message);
-				$ch->putLine();
+				$this->ch->putLine($message);
+				$this->ch->putLine();
 			}
 
-			$ch->putLine("Call `php " . $ch->getSelf() . " -h` or `php " . $ch->getSelf() . " --help` for more information");
+			$this->ch->putLine("Call `php " . $this->ch->getSelf() . " -h` or `php " . $this->ch->getSelf() . " --help` for more information");
 
 			return $this;
 		}
@@ -184,27 +182,26 @@
 		/**
 		 * Generates a full set of instructions for using the script, including examples and options.
 		 *
-		 * @param ConsoleHelper $ch ConsoleHelper object for use with output.
 		 * @return static
 		 */
-		public function showOptionHelp(ConsoleHelper $ch) : static {
+		public function showOptionHelp() : static {
 			if (count($this->options) < 1) {
-				$this->showBasicHelp($ch);
+				$this->showBasicHelp();
 
 				return $this;
 			}
 
-			$help = $ch->getParameterWithDefault('h', 'help');
+			$help = $this->ch->getParameterWithDefault('h', 'help');
 
 			if ($help !== true) {
 				$help = strtolower($help);
 
 				foreach ($this->options as $opt) {
 					if ($help === strtolower($opt->shortName) || $help === strtolower($opt->longName)) {
-						$ch->putLine("Basic usage of {$opt->name} option: -{$opt->shortName} | --{$opt->longName}");
-						$ch->putLine();
-						$ch->putLine(wordwrap($opt->longDescription));
-						$ch->putLine();
+						$this->ch->putLine("Basic usage of {$opt->name} option: -{$opt->shortName} | --{$opt->longName}");
+						$this->ch->putLine();
+						$this->ch->putLine(wordwrap($opt->longDescription));
+						$this->ch->putLine();
 
 						break;
 					}
@@ -213,11 +210,11 @@
 				return $this;
 			}
 
-			$ch->putLine($this->description);
-			$ch->putLine();
+			$this->ch->putLine($this->description);
+			$this->ch->putLine();
 
-			$ch->putLine("Available arguments and examples");
-			$ch->putLine();
+			$this->ch->putLine("Available arguments and examples");
+			$this->ch->putLine();
 
 			$required = [];
 			$optional = [];
@@ -236,22 +233,22 @@
 			}
 
 			if (count($required) > 0) {
-				$ch->putLine("Required Arguments:");
-				$ch->putLine(implode(PHP_EOL, array_values($required)));
-				$ch->putLine();
+				$this->ch->putLine("Required Arguments:");
+				$this->ch->putLine(implode(PHP_EOL, array_values($required)));
+				$this->ch->putLine();
 			}
 
 			if (count($optional) > 0) {
-				$ch->putLine("Optional Arguments:");
-				$ch->putLine(implode(PHP_EOL, array_values($optional)));
-				$ch->putLine();
+				$this->ch->putLine("Optional Arguments:");
+				$this->ch->putLine(implode(PHP_EOL, array_values($optional)));
+				$this->ch->putLine();
 			}
 
 			if (count($this->examples) > 0) {
-				$ch->putLine("Examples:");
-				$ch->putLine();
-				$ch->putLine(implode(PHP_EOL . PHP_EOL, array_values($this->examples)));
-				$ch->putLine();
+				$this->ch->putLine("Examples:");
+				$this->ch->putLine();
+				$this->ch->putLine(implode(PHP_EOL . PHP_EOL, array_values($this->examples)));
+				$this->ch->putLine();
 			}
 
 			return $this;
@@ -263,23 +260,22 @@
 		 * requirements if toggled (toggled by default). If the requirements are checked and not met, the same message
 		 * produced by CliScriptHelper::checkRequirements() is shown and the script will exit.
 		 *
-		 * @param ConsoleHelper $ch ConsoleHelper object for use with output.
 		 * @param bool $checkRequirements Optional toggle for checking requirements, defaults to true.
 		 * @return static
 		 */
-		public function startScript(ConsoleHelper $ch, bool $checkRequirements = true) : static {
-			$ch->putLine($this->name);
-			$ch->putLine(str_pad('', strlen($this->name), '-'));
-			$ch->putLine();
+		public function startScript(bool $checkRequirements = true) : static {
+			$this->ch->putLine($this->name);
+			$this->ch->putLine(str_pad('', strlen($this->name), '-'));
+			$this->ch->putLine();
 
-			if ($ch->hasShortLongArg('h', 'help')) {
-				$this->showOptionHelp($ch);
+			if ($this->ch->hasShortLongArg('h', 'help')) {
+				$this->showOptionHelp();
 
 				exit;
 			}
 
 			if ($checkRequirements) {
-				$this->checkRequirements($ch);
+				$this->checkRequirements();
 			}
 
 			return $this;
