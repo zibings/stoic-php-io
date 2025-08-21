@@ -47,7 +47,7 @@
 		 * @param null|array $argv Argument collection.
 		 * @param bool $forceCli Force instance to emulate CLI mode.
 		 */
-		public function __construct(array $argv = null, bool $forceCli = false) {
+		public function __construct(null|array $argv = null, bool $forceCli = false) {
 			$this->argInfo = array(
 				self::ARGINFO_ARGC => 0,
 				self::ARGINFO_ARGV => [],

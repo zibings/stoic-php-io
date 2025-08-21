@@ -39,10 +39,10 @@
 		 * Instantiates new FileHelper class.
 		 *
 		 * @param string $relativePath String value of relative path, replaces '~' in paths.
-		 * @param string[] $preIncludes Array of files that have already been included in runtime.
+		 * @param null|string[] $preIncludes Array of files that have already been included in runtime.
 		 * @throws \InvalidArgumentException Thrown if core path provided is invalid/non-existent.
 		 */
-		public function __construct(string $relativePath, array $preIncludes = null) {
+		public function __construct(string $relativePath, null|array $preIncludes = null) {
 			if (!is_dir($relativePath)) {
 				throw new \InvalidArgumentException("Invalid core path provided for FileHelper instance.");
 			}
