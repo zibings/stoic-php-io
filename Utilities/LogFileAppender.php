@@ -13,8 +13,8 @@
 	 * @version 1.1.0
 	 */
 	class LogFileOutputTypes extends EnumBase {
-		const PLAIN = 1;
-		const JSON = 2;
+		const int PLAIN = 1;
+		const int JSON  = 2;
 	}
 
 	/**
@@ -24,23 +24,9 @@
 	 * @version 1.1.0
 	 */
 	class LogFileAppender extends AppenderBase {
-		/**
-		 * Internal FileHelper instance.
-		 *
-		 * @var FileHelper
-		 */
+		protected bool $enabled;
 		protected FileHelper $fh;
-		/**
-		 * Path to the output file.
-		 *
-		 * @var string
-		 */
 		protected string $outputFile;
-		/**
-		 * Type of output to add to the output file.
-		 *
-		 * @var LogFileOutputTypes
-		 */
 		protected LogFileOutputTypes $outputType;
 
 
@@ -57,17 +43,26 @@
 				throw new \InvalidArgumentException("Invalid output type supplied");
 			}
 
+			$this->setKey('LogFileAppender');
+			$this->setVersion('1.0');
+
 			$this->fh         = $fh;
 			$this->outputFile = $outputFile;
 			$this->outputType = LogFileOutputTypes::tryGet($outputType);
+			$pathInfo         = pathinfo(realpath($this->fh->pathJoin($this->outputFile)));
+			$this->enabled    = $this->fh->folderExists($pathInfo['dirname']);
+
+			if (!$this->enabled) {
+				echo("LogFileAppender disabled, output folder does not exist: {$pathInfo['dirname']}" . PHP_EOL);
+
+				return;
+			}
 
 			if (!$this->fh->fileExists($this->outputFile)) {
 				$this->fh->touchFile($this->outputFile);
 			}
 
 			$this->outputFile = realpath($this->fh->pathJoin($this->outputFile));
-			$this->setKey('LogFileAppender');
-			$this->setVersion('1.0');
 
 			return;
 		}
@@ -81,6 +76,12 @@
 		 */
 		public function process(mixed $sender, DispatchBase &$dispatch) : void {
 			if (!($dispatch instanceof MessageDispatch)) {
+				return;
+			}
+
+			if (!$this->enabled) {
+				echo("LogFileAppender disabled, cannot write to file: {$this->outputFile}" . PHP_EOL);
+
 				return;
 			}
 
